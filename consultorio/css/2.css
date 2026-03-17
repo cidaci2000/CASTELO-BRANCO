@@ -1,0 +1,489 @@
+/* Reset e estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Overlay para melhorar a legibilidade */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: -1;
+}
+
+/* Header */
+header {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+header h1 {
+    font-size: 2.8em;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+header p {
+    font-size: 1.3em;
+    color: #34495e;
+    font-weight: 300;
+}
+
+/* Grid de médicos */
+.medicos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.medico-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.medico-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(52, 152, 219, 0.3);
+    background: white;
+}
+
+/* Ícone do médico (representação visual) */
+.medico-card::before {
+    content: '👨‍⚕️';
+    font-size: 4em;
+    margin-bottom: 15px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.medico-card:nth-child(even)::before {
+    content: '👩‍⚕️';
+}
+
+.medico-card:hover::before {
+    transform: scale(1.1);
+}
+
+.medico-card h3 {
+    color: #2c3e50;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.medico-card p {
+    color: #3498db;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding: 8px 20px;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 50px;
+    display: inline-block;
+}
+
+/* Badge de especialidade */
+.medico-card .especialidade-badge {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 25px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* Indicador de clique */
+.medico-card::after {
+    content: '📅 Agendar consulta';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9em;
+    color: #3498db;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: white;
+    padding: 5px 15px;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    white-space: nowrap;
+}
+
+.medico-card:hover::after {
+    opacity: 1;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    max-width: 550px;
+    width: 95%;
+    position: relative;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #95a5a6;
+    transition: all 0.3s ease;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f8f9fa;
+    border: 2px solid transparent;
+}
+
+.close:hover {
+    color: #e74c3c;
+    background: #fee;
+    transform: rotate(90deg);
+    border-color: #e74c3c;
+}
+
+.modal-content h2 {
+    color: #2c3e50;
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    padding-right: 40px;
+    font-weight: 700;
+}
+
+.modal-content #modal-especialidade {
+    color: #7f8c8d;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #ecf0f1;
+    font-style: italic;
+}
+
+/* Formulário do modal */
+#modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#modal-form input {
+    padding: 18px 20px;
+    border: 2px solid #ecf0f1;
+    border-radius: 15px;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    outline: none;
+    background: #f8f9fa;
+}
+
+#modal-form input:focus {
+    border-color: #3498db;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+}
+
+#modal-form input::placeholder {
+    color: #bdc3c7;
+    font-style: italic;
+}
+
+#modal-form input[type="date"],
+#modal-form input[type="time"] {
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Container para data e hora */
+.datetime-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+#modal-form button {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    font-size: 1.3em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#modal-form button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+
+#modal-form button:active {
+    transform: translateY(0);
+}
+
+#modal-form button::before {
+    content: '✓';
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+/* Mensagem de sucesso */
+.sucesso {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 25px;
+    display: none;
+    animation: slideUp 0.4s ease;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2em;
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
+    border-left: 5px solid #27ae60;
+    line-height: 1.8;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Informações adicionais no card */
+.medico-info {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.medico-info p {
+    font-size: 0.95em;
+    color: #7f8c8d;
+    background: none;
+    padding: 0;
+    margin: 5px 0;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .medicos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 20px 15px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    header p {
+        font-size: 1.1em;
+    }
+    
+    .medicos-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .modal-content {
+        padding: 30px 20px;
+    }
+    
+    .modal-content h2 {
+        font-size: 1.8em;
+    }
+    
+    .datetime-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #modal-form button {
+        font-size: 1.1em;
+        padding: 15px;
+    }
+    
+    .medico-card::after {
+        white-space: normal;
+        width: 90%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.6em;
+    }
+    
+    .medico-card {
+        padding: 20px;
+    }
+    
+    .medico-card h3 {
+        font-size: 1.5em;
+    }
+    
+    .close {
+        width: 35px;
+        height: 35px;
+        font-size: 25px;
+    }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 10px;
+    border: 3px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+
+/* Efeito de vidro nos cards */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Ícones para os campos do formulário */
+#paciente {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%233498db" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>');
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    padding-left: 50px;
+}
+
+#data {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%233498db" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>');
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    padding-left: 50px;
+}
+
+#hora {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%233498db" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>');
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    padding-left: 50px;
+}
