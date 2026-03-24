@@ -1,0 +1,73 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #FFF0F5;
+    color: #8B5F65;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    color: #D35D6E;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cupcake-img {
+    width: 100px;
+    margin-top: 10px;
+}
+
+.form-container {
+    margin-top: 20px;
+}
+
+.form-container h2 {
+    font-size: 1.5em;
+    color: #A86A76;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #FFD1DC;
+    border-radius: 10px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+button {
+    background-color: #D35D6E;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #FF9EB5;
+}
+
+a {
+    color: #D35D6E;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

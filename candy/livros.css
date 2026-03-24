@@ -1,0 +1,133 @@
+/* Configurações Gerais */
+body {
+    background-color: #FFF5F7; /* Fundo rosinha bem claro */
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    color: #5D4037; /* Marrom suave para o texto */
+}
+
+/* Header */
+.header {
+    background-color: #FFD1DC; /* Rosa Pastel */
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.header h1 {
+    margin: 0;
+    color: #FF748C;
+}
+
+.header nav a {
+    text-decoration: none;
+    color: #FF748C;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Container de Livros - O Segredo da Organização */
+.livros {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* O Card do Livro */
+.livro {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 8px 20px rgba(255, 183, 197, 0.2);
+    border: 2px solid #FFE4E9;
+}
+
+.livro:hover {
+    transform: translateY(-10px);
+}
+
+.livro img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.livro h3 {
+    color: #FF748C;
+    margin: 10px 0;
+}
+
+.livro p {
+    font-size: 0.9rem;
+    color: #888;
+    height: 40px; /* Mantém o alinhamento mesmo com textos diferentes */
+}
+
+/* Botão de Comprar */
+.comprar {
+    background-color: #FFB7C5; /* Rosa mais forte */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.comprar:hover {
+    background-color: #FF748C;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #FFB7C5;
+    font-size: 0.8rem;
+}
+/* Container do personagem - Agora maior e na esquerda */
+.personagem-confeiteiro {
+    position: fixed; 
+    bottom: 0;           /* Grudado no chão para parecer que ele está em pé na tela */
+    left: 40px;          /* Mudei de 'right' para 'left' (lado esquerdo) */
+    width: 400px;        /* Aumentei bastante! Ajuste aqui se ficar exagerado */
+    z-index: 9999;   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none; /* Permite clicar nos botões que ficarem atrás dele */
+}
+
+/* O Balão de Fala - Ajustado para o novo tamanho */
+.balao-fala {
+    position: relative;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: 3px solid #FFD1DC;
+    font-size: 1.1rem;    /* Aumentei a letra também */
+    color: #FF748C;
+    font-weight: bold;
+    margin-bottom: 10px; 
+    box-shadow: 0 5px 15px rgba(255, 183, 197, 0.4);
+    text-align: center;
+    pointer-events: auto; /* Deixa passar o mouse no balão se quiser */
+}
+
+/* Imagem do Personagem */
+.personagem-confeiteiro img {
+    width: 100%;
+    display: block;
+    /* Se a imagem estiver cortada ou com fundo branco, use um PNG transparente */
+    filter: drop-shadow(5px 0px 15px rgba(0,0,0,0.1)); 
+}

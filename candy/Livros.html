@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livraria Doceria</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff5f0;
+            padding: 40px 20px;
+        }
+
+        .livros {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .livro {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .livro:hover {
+            transform: translateY(-5px);
+        }
+
+        .livro img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .livro h3 {
+            color: #d46b5e;
+            margin: 15px 0 10px;
+            font-size: 1.3rem;
+        }
+
+        .livro p {
+            color: #666;
+            padding: 0 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .comprar {
+            background-color: #d46b5e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 15px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: calc(100% - 30px);
+        }
+
+        .comprar:hover {
+            background-color: #b85448;
+        }
+
+        .personagem-confeiteiro {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .balao-fala {
+            background-color: white;
+            border-radius: 20px;
+            padding: 10px 15px;
+            max-width: 200px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
+            font-size: 0.9rem;
+            color: #d46b5e;
+            font-weight: bold;
+        }
+
+        .balao-fala::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            border-width: 10px 10px 0 0;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+
+        .personagem-confeiteiro img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .personagem-confeiteiro img:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .livros {
+                gap: 20px;
+            }
+            
+            .livro {
+                width: 240px;
+            }
+            
+            .personagem-confeiteiro {
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="livros">
+        <!-- Card 1 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/81sKSmHFplL._SY425_.jpg" alt="Receitas da Vovó">
+            <h3>Receitas da Vovó</h3>
+            <p>As melhores receitas caseiras com amor e tradição.</p>
+            <button class="comprar" onclick="alert('Você adicionou Receitas da Vovó ao carrinho!')">Comprar - R$ 30,00</button>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/91MWzJA6dzL._AC_UL320_.jpg" alt="Sobremesas Candy">
+            <h3>Sobremesas Candy</h3>
+            <p>Doces coloridos e divertidos para fazer em casa.</p>
+            <button class="comprar" onclick="alert('Você adicionou Sobremesas Candy ao carrinho!')">Comprar - R$ 25,00</button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="livro">
+            <img src="https://images.unsplash.com/photo-1587668178277-295251f900ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Bolos de Marshmallow">
+            <h3>Bolos de Marshmallow</h3>
+            <p>Aprenda coberturas nuvem irresistíveis.</p>
+            <button class="comprar" onclick="alert('Você adicionou Bolos de Marshmallow ao carrinho!')">Comprar - R$ 45,00</button>
+        </div>
+    </section>
+
+    <!-- Personagem -->
+    <div class="personagem-confeiteiro">
+        <div class="balao-fala">Olá! Que tal um livro bem docinho? ❤️</div>
+        <img src="https://cdn-icons-png.flaticon.com/512/189/189711.png" alt="Confeiteiro" onclick="alert('Olá! Escolha seu livro favorito!')">
+    </div>
+
+    <script>
+        // Adiciona interatividade extra
+        const botoes = document.querySelectorAll('.comprar');
+        botoes.forEach(botao => {
+            botao.addEventListener('click', function() {
+                const livro = this.parentElement.querySelector('h3').textContent;
+                console.log(`Produto adicionado: ${livro}`);
+            });
+        });
+    </script>
+</body>
+</html>

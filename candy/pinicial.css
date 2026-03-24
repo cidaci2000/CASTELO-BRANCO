@@ -1,0 +1,184 @@
+/* RESET GLOBAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: Arial, sans-serif;
+  background: #fff0f5;
+}
+
+/* CONTAINER CENTRAL */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  background: #ffb6c1;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: white;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav button {
+  background: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.hero h2 {
+  font-size: 36px;
+  color: #ff6f91;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #ff6f91;
+}
+
+/* CARROSSEL */
+.carousel {
+  padding: 30px 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  overflow: hidden; /* Impede a barra de rolagem visível */
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.recipe-card {
+  min-width: 180px;
+  max-width: 180px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease; /* Efeito de transição suave */
+}
+
+.recipe-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.recipe-card h3 {
+  font-size: 16px;
+  padding: 10px;
+  text-align: center;
+}
+
+.recipe-card:hover {
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+/* CARDS DE RECEITAS POPULARES */
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  justify-content: center;
+}
+
+.card {
+  width: 220px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.card h3 {
+  font-size: 18px;
+  padding: 10px;
+}
+
+.card p {
+  padding: 0 10px 10px;
+  font-size: 14px;
+}
+
+.card button {
+  margin: 10px;
+  background: #ff6f91;
+  color: white;
+  width: 90%;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+/* CATEGORIAS */
+.categorias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  padding: 20px 0;
+}
+
+.categoria {
+  background: #ffc0cb;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  background: #ffb6c1;
+  color: white;
+  margin-top: 20px;
+}
+
