@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineVortex • Cadastro</title>
+    <link rel="stylesheet" href="/cinevortex_atualizado/css/cadastro.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <h1 class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">CINE<span>VORTEX</span></h1>
+            
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>✨ Criar Nova Conta</h2>
+                <p>Junte-se à comunidade CineVortex</p>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <form class="auth-form" id="cadastroForm">
+                <div class="form-group">
+                    <label for="nome">👤 Nome completo *</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Seu nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 E-mail *</label>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">🔒 Senha *</label>
+                    <input type="password" id="senha" name="senha" required placeholder="Mínimo 6 caracteres">
+                    <div class="password-strength" id="passwordStrength"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmar_senha">🔒 Confirmar senha *</label>
+                    <input type="password" id="confirmar_senha" name="confirmar_senha" required placeholder="Digite a senha novamente">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="aceito_termos" name="aceito_termos" required>
+                    <label for="aceito_termos">
+                        Eu aceito os <a href="#" onclick="alert('Termos de uso do CineVortex'); return false;">Termos de Uso</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-cadastro-submit">Criar Minha Conta</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+            </div>
+
+            <div class="back-home">
+                <a href="home.html">← Voltar para o início</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>CineVortex © 2026 - Tudo sobre cinema em um só lugar</p>
+    </footer>
+
+    <script src="/cinevortex_atualizado/js/cadastro.js"></script>
+</body>
+</html>
