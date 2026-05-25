@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+</body>
+</html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <a href="receitas.php" style="background-color:#FFC5D3; color:#555; padding:10px 20px; border-radius:50px; text-decoration:none; display:inline-block; font-family:sans-serif; font-weight:bold;">
+  <span style="margin-right:5px;">←</span> Início
+</a>
+
+    <title>Livraria Doceria</title>
+    <style>
+        
+    
+        
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2e4dc; /* creme vintage */
+    padding: 40px 20px;
+    color: #4a3f3f; /* marrom escuro suave para textos */
+}
+
+.livros {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.livro {
+    background-color: #f5c6c8; /* rosa antigo mais marcante */
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(184,59,94,0.4); /* sombra visível rosa/vinho */
+    overflow: hidden;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.livro:hover {
+    transform: translateY(-5px);
+}
+
+.livro img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.livro h3 {
+    color: #8b2d3b; /* título vinho para destaque */
+    margin: 15px 0 10px;
+    font-size: 1.3rem;
+}
+
+.livro p {
+    color: #5a4a4a; /* texto marrom escuro suave */
+    padding: 0 15px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.comprar {
+    background-color: #8b2d3b; /* botão vinho */
+    color: #fff4f4; /* texto claro */
+    border: none;
+    padding: 10px 20px;
+    margin: 0 15px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: calc(100% - 30px);
+}
+
+.comprar:hover {
+    background-color: #6e2230; /* hover mais escuro */
+}
+
+.personagem-confeiteiro {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .livros {
+        gap: 20px;
+    }
+    
+    .livro {
+        width: 240px;
+    }
+    
+    .personagem-confeiteiro {
+        bottom: 10px;
+        right: 10px;
+    }
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif; /* fonte mais moderna e legível */
+    background-color: #f2e4dc; /* creme vintage */
+    padding: 40px 20px;
+    color: #4a3f3f; /* marrom escuro suave para textos */
+}
+
+/* Seção Livros / Carrossel */
+.livros {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+.livros h2 {
+    color: #8b2d3b;
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Carrossel horizontal */
+.carrossel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+.carrossel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.carrossel::-webkit-scrollbar-thumb {
+    background-color: #8b2d3b;
+    border-radius: 4px;
+}
+
+/* Card do livro */
+.livro {
+    flex: 0 0 260px;
+    background-color: #f5c6c8; /* rosa antigo */
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(184,59,94,0.4);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.livro:hover {
+    transform: translateY(-5px);
+}
+
+.livro img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.livro h3 {
+    color: #8b2d3b;
+    margin: 12px 0 6px;
+    font-size: 1.4rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.livro p {
+    color: #5a4a4a;
+    padding: 0 15px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+/* Botões de compra */
+.comprar {
+    background-color: #8b2d3b;
+    color: #fff4f4;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 15px 15px;
+    border-radius: 50px; /* botões mais arredondados */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: calc(100% - 30px);
+}
+
+.comprar:hover {
+    background-color: #6e2230;
+    transform: scale(1.05);
+}
+
+/* Personagem da Vovó */
+.personagem-confeiteiro {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.balao-fala {
+    background-color: #f5c6c8;
+    border-radius: 25px;
+    padding: 12px 18px;
+    max-width: 220px;
+    box-shadow: 0 3px 10px rgba(184,59,94,0.4);
+    position: relative;
+    font-size: 0.95rem;
+    color: #8b2d3b;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.balao-fala::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    border-width: 10px 10px 0 0;
+    border-style: solid;
+    border-color: #f5c6c8 transparent transparent transparent;
+}
+
+.personagem-confeiteiro img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border: 3px solid #e8aab2;
+}
+
+.personagem-confeiteiro img:hover {
+    transform: scale(1.1);
+}
+
+/* Seções adicionais */
+.categorias, .curiosidades, .depoimentos {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #fff0f5;
+}
+
+.categorias h2, .curiosidades h2, .depoimentos h2 {
+    color: #8b2d3b;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Categorias */
+.categoria-lista {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.categoria-card {
+    background-color: #f5c6c8;
+    padding: 12px 25px;
+    border-radius: 30px; /* mais arredondado */
+    color: #fff;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.categoria-card:hover {
+    transform: scale(1.05);
+}
+
+/* Curiosidades */
+.curiosidades {
+    background-image: url('https://i.pinimg.com/736x/c0/21/2f/c0212f89e2f25f1face34ebb090158db.jpg'); /* sua imagem de papel antigo */
+    background-size: cover;
+    background-position: center;
+    padding: 40px;
+    border-radius: 15px;
+    color: #4b3b2f; /* cor de tinta antiga */
+    font-family: 'Georgia', serif;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.curiosidades h2 {
+    text-align: center;
+    font-family: 'Cursive', sans-serif; /* título manuscrito */
+    margin-bottom: 25px;
+}
+
+.curiosidade-card {
+    background-color: rgba(255, 255, 255, 0.7); /* leve transparência sobre o papel */
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.curiosidade-card p {
+    margin: 0;
+    font-weight: bold;   /* deixa o texto grosso */
+    font-size: 1.1em;   /* deixa o texto um pouco maior e mais legível */
+}
+/* Depoimentos */
+.depoimento-card {
+    background-color: #f5c6c8;
+    padding: 15px 20px;
+    border-radius: 20px;
+    margin: 10px auto;
+    max-width: 500px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.depoimento-card:hover {
+    transform: scale(1.03);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .carrossel {
+        gap: 15px;
+    }
+
+    .livro {
+        flex: 0 0 200px;
+    }
+
+    .personagem-confeiteiro {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .categoria-lista {
+        gap: 10px;
+    }
+}
+   
+   
+
+   </style>
+</head>
+<body>
+    <section class="livros">
+    <h2>Livros & Receitas da Vovó</h2>
+      
+            
+
+    <section class="livros">
+
+    <!-- Categorias de Livros - acima do carrossel -->
+    <div class="categoria-lista" style="display:flex; justify-content:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+        <div class="categoria-card" style="background-color:#f5c6c8; padding:8px 15px; border-radius:15px; cursor:pointer; font-weight:bold;">Doces</div>
+        <div class="categoria-card" style="background-color:#f5c6c8; padding:8px 15px; border-radius:15px; cursor:pointer; font-weight:bold;">Sopas</div>
+        <div class="categoria-card" style="background-color:#f5c6c8; padding:8px 15px; border-radius:15px; cursor:pointer; font-weight:bold;">Bolos</div>
+        <div class="categoria-card" style="background-color:#f5c6c8; padding:8px 15px; border-radius:15px; cursor:pointer; font-weight:bold;">Tortas</div>
+        <div class="categoria-card" style="background-color:#f5c6c8; padding:8px 15px; border-radius:15px; cursor:pointer; font-weight:bold;">Biscoitos</div>
+    </div>
+
+    <!-- Carrossel horizontal -->
+    <div class="carrossel">
+        <!-- Card 1 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/91-TNKz5AjL._AC_UL320_.jpg" alt="Bolos da Vovó">
+            <h3>Bolos da Vovó</h3>
+            <p>Receitas de bolos fofinhos e cheios de amor.</p>
+            <button class="comprar">Comprar - R$ 30,00</button>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/51RAb17zveL._SX342_SY445_ML2_.jpg" alt="Doces Coloridos">
+            <h3>Doces </h3>
+            <p>Dos biscoitos aos bolos, passando pelas tortas e doçuras, este livro de receitas desvela os grandes clássicos da Maison Ladurée..</p>
+            <button class="comprar">Comprar - R$ 160,93</button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/81u5fEClf5L._AC_UL320_.jpg" alt="Sopas da Vovó">
+            <h3>Não é Sopa </h3>
+            <p>Publicado pela primeira vez em 1994, este livro reúne crônicas e receitas..</p>
+            <button class="comprar">Comprar - R$ 74,02</button>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/51v+WUG5chL._SY445_SX342_ML2_.jpg" alt="Tortas Especiais">
+            <h3>A simples arte de fazer tortas doces </h3>
+            <p>O livro ideal para quem quer descobrir os segredos e aprender as técnicas para preparar as mais deliciosas tortas doces.</p>
+            <button class="comprar">Comprar - R$ 94,33</button>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="livro">
+            <img src="https://m.media-amazon.com/images/I/51zslBNY0EL._SY425_.jpg" alt="Biscoitos da Vovó">
+            <h3>The Ultimate Cookie Collection</h3>
+            <p> 499 receitas de biscoito deliciosas - de biscoitos clássicos, brownies e bares a favoritos de festas </p>
+            <button class="comprar">Comprar - R$ 106,37</button>
+        </div>
+    </div>
+</section>
+<!-- Seção: Curiosidades da Cozinha -->
+<section class="curiosidades">
+    <h2>Curiosidades da Vovó</h2>
+  <div class="curiosidade-card">
+        <p>❤️-Muitas receitas de vó não têm medidas exatas; o segredo é sentir o ponto..</p>
+       
+    </div>
+    <div class="curiosidades-card">
+        <p>❤️-Adicionar uma pitada de sal nos doces realça o sabor.</p>
+      
+    </div>
+     <div class="curiosidades-card">
+        <p>❤️O bolo de cenoura foi popularizado no Brasil nos anos 60 </p>
+      
+    </div>
+     <div class="curiosidades-card">
+        <p>❤️-A maionese surgiu por acidente: soldados franceses precisavam de um molho rápido e misturaram ovo e óleo.</p>
+      
+    </div>
+</section>
+
+<!-- Seção: Depoimentos -->
+<section class="depoimentos">
+    <h2>Depoimentos</h2>
+    <div class="depoimento-card">
+        <p>"A sopa da vovó me lembra a infância. ❤️"</p>
+        <span>- Ana, fã de receitas</span>
+    </div>
+    <div class="depoimento-card">
+        <p>"Aprendi a fazer bolos deliciosos e coloridos!"</p>
+        <span>- Lucas, aprendiz de confeiteiro</span>
+    </div>
+    <div class="depoimento-card">
+        <p>"Cada receita tem um toque especial que faz lembrar a cozinha da vovó."</p>
+        <span>- Sofia, cozinheira de coração</span>
+    </div>
+    <div class="depoimento-card">
+        <p>"Meu filho e eu adoramos testar cada receita juntos."</p>
+        <span>- Juliana, mãe e cozinheira</span>
+    </div>
+</section>
+    </script>
+
+</body>
+</html>

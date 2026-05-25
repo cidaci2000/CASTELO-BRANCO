@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <a href="receitas.php" style="background-color:#FFC5D3; color:#555; padding:10px 20px; border-radius:50px; text-decoration:none; display:inline-block; font-family:sans-serif; font-weight:bold;">
+  <span style="margin-right:5px;">←</span> Início
+</a>
+    <meta charset="UTF-8">
+    <title>Site de Receitas</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #f9f5f2;
+            margin:0; padding:0;
+        }
+        .container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:20px;
+        }
+        .header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px 30px;
+            background-color:#d8a7b1;
+            color:#3b2c2c;
+            border-radius:10px;
+            margin-bottom:30px;
+        }
+        .header h1{
+            font-size:1.5rem;
+        }
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(300px,1fr));
+            gap:20px;
+        }
+        .card{
+            background:#fffaf7;
+            border-radius:15px;
+            overflow:hidden;
+            box-shadow:0 3px 10px rgba(90,70,70,0.1);
+            transition:transform 0.3s ease;
+        }
+        .card:hover{
+            transform:translateY(-5px);
+        }
+        .card img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+        .card h3{
+            padding:15px 15px 5px;
+            color:#b83b5e;
+        }
+        .card p{
+            padding:0 15px 15px;
+            color:#6e5f5f;
+            line-height:1.4;
+        }
+        .card button{
+            display:inline-block;
+            margin:0 0 15px 15px;
+            padding:8px 12px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:bold;
+            border:none;
+            cursor:pointer;
+        }
+        .add{
+            background:#fcd5ce;
+            color:#7c2d2d;
+        }
+        .remove{
+            background:#d8a7b1;
+            color:#3b2c2c;
+        }
+        h2{
+            color:#b83b5e;
+        }
+        .card {
+  width: 400px;   /* aumenta a largura do card */
+  height: auto;   /* altura ajustável */
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;    /* imagem ocupa toda a largura do card */
+  height: 250px;  /* altura fixa maior */
+  object-fit: cover; /* mantém proporção sem distorcer */
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <h1>Minhas Receitas</h1>
+        <span>Receitas Guardadas: <span id="contador">0</span></span>
+    </header>
+
+    <section class="receitas">
+        <h2>Minhas Receitas Guardadas</h2>
+        <div class="cards" id="receitas-guardadas">
+            <p id="nenhuma" style="color:#6e5f5f;">Nenhuma receita guardada.</p>
+        </div>
+    </section>
+ <section class="receitas">
+        <h2>Receitas Disponíveis</h2>
+        <div class="cards" id="receitas-disponiveis">
+            <!-- Receitas serão inseridas pelo JS -->
+        </div>
+    </section>
+</div>
+
+<script>
+const receitas = [
+    {id:1, nome:'Bolo de Chocolate', descricao:'Bolo macio com cobertura de chocolate.', imagem:'https://i.pinimg.com/736x/85/ee/e9/85eee95df755d201e83efea4ef85979b.jpg'},
+    {id:2, nome:'Salada Mediterrânea', descricao:'Salada fresca com azeitonas, tomate e queijo feta.', imagem:'https://www.estadao.com.br/resizer/v2/3K45SRWMQBAMHEOCORS3HY2W5I.jpg?quality=80&auth=f62b05ac178898c1263b005230d5b21b99330b36d6e0c63387a6f83bba98077b&width=720&height=410&smart=true'},
+    {id:3, nome:'Lasanha de Frango', descricao:'Lasanha cremosa e cheia de sabor.', imagem:'https://vovonaoca.com.br/wp-content/uploads/2024/06/Lasanha-de-Frango-com-Batata-Palha-para-Almoco-de-Domingo-672x352.jpg'}
+];
+
+let guardadas = [];
+
+function atualizarContador(){
+    document.getElementById('contador').textContent = guardadas.length;
+    document.getElementById('nenhuma').style.display = guardadas.length ? 'none':'block';
+}
+
+function renderReceitasDisponiveis(){
+    const container = document.getElementById('receitas-disponiveis');
+    container.innerHTML = '';
+    receitas.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <img src="${r.imagem}" alt="${r.nome}">
+            <h3>${r.nome}</h3>
+            <p>${r.descricao}</p>
+            <button class="add" onclick="guardar(${r.id})">Guardar Receita</button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function renderGuardadas(){
+    const container = document.getElementById('receitas-guardadas');
+    container.innerHTML = '';
+    if(guardadas.length === 0){
+        document.getElementById('nenhuma').style.display = 'block';
+        return;
+    }
+    guardadas.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <img src="${r.imagem}" alt="${r.nome}">
+            <h3>${r.nome}</h3>
+            <p>${r.descricao}</p>
+            <button class="remove" onclick="remover(${r.id})">Remover</button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function guardar(id){
+    const receita = receitas.find(r => r.id === id);
+    if(!guardadas.some(r => r.id === id)){
+        guardadas.push(receita);
+    }
+    renderGuardadas();
+    atualizarContador();
+}
+
+function remover(id){
+    guardadas = guardadas.filter(r => r.id !== id);
+    renderGuardadas();
+    atualizarContador();
+}
+
+renderReceitasDisponiveis();
+renderGuardadas();
+atualizarContador();
+</script>
+
+</body>
+</html>
