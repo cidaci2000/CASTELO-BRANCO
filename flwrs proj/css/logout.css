@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fefaf5;
+    font-family: 'Inter', sans-serif;
+    color: #2a2a2a;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-container {
+    background: #ffffffd9;
+    backdrop-filter: blur(2px);
+    border-radius: 32px 16px 32px 16px;
+    padding: 2.8rem 2.5rem;
+    box-shadow: 0 20px 35px -12px rgba(152, 123, 136, 0.2);
+    border: 1px solid rgba(247, 213, 231, 0.6);
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+}
+
+.logout-icon {
+    font-size: 4rem;
+    color: #b4849a;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    color: #b4849a;
+    font-weight: 320;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #7f7269;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-confirm {
+    background: #b2e4b3;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 60px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    color: #2d3b2d;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-confirm:hover {
+    background: #deef6e;
+    transform: scale(1.02);
+}
+
+.btn-cancel {
+    background: transparent;
+    border: 1px solid #f7d5e7;
+    padding: 0.8rem 2rem;
+    border-radius: 60px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    color: #b4849a;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-cancel:hover {
+    background: #fefaf5;
+    border-color: #c06f8b;
+    color: #c06f8b;
+}
