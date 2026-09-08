@@ -1,0 +1,259 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #fcf8f5;
+    color: #3d3835;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(150deg, #fcf8f5 0%, #fefaf5 50%, #f5ece9 100%);
+    padding: 2rem;
+}
+
+/* ===== LOGIN BOX ===== */
+.login-box {
+    background: white;
+    padding: 3.5rem 3rem;
+    border-radius: 32px;
+    border: 1px solid rgba(180, 165, 160, 0.08);
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.06), 0 10px 30px -10px rgba(0, 0, 0, 0.02);
+    max-width: 440px;
+    width: 100%;
+    transition: all 0.4s ease;
+}
+
+.login-box:hover {
+    box-shadow: 0 40px 100px -24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== LOGO ===== */
+.logo {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 200;
+    letter-spacing: 0.04em;
+    color: #3d3835;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.logo strong {
+    font-weight: 500;
+    color: #e94e77;
+}
+
+.logo small {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a8958f;
+    font-weight: 300;
+    margin-top: 0.2rem;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.login-box h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #2d2825;
+    margin-bottom: 0.2rem;
+}
+
+.sub {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #a8958f;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+/* ===== ERROR MESSAGE ===== */
+.error {
+    background: #fef6f5;
+    border: 1px solid #f8d7da;
+    border-radius: 16px;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 1.5rem;
+    color: #721c24;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* ===== FORM ===== */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6d6560;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: #3d3835;
+    background: #fcf8f5;
+    border: 1.5px solid rgba(180, 165, 160, 0.15);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #e94e77;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(233, 78, 119, 0.06);
+}
+
+.input-group input::placeholder {
+    color: #bbb0aa;
+    font-weight: 300;
+}
+
+/* ===== BUTTON ===== */
+.btn-login {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: #e94e77;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin-top: 0.5rem;
+}
+
+.btn-login:hover {
+    background: #d43f68;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px -8px rgba(233, 78, 119, 0.3);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+/* ===== LINKS ===== */
+.links {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #a8958f;
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.links a {
+    color: #6d6560;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 400;
+    border-bottom: 1px solid transparent;
+}
+
+.links a:hover {
+    color: #e94e77;
+    border-bottom-color: #e94e77;
+}
+
+.links .separator {
+    color: #e8d5d0;
+}
+
+/* ===== PASSWORD FORGOT ===== */
+.forgot-password {
+    text-align: right;
+    margin: -0.5rem 0 1.5rem;
+}
+
+.forgot-password a {
+    font-size: 0.7rem;
+    color: #a8958f;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.04em;
+}
+
+.forgot-password a:hover {
+    color: #e94e77;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    body {
+        padding: 1.5rem;
+        align-items: flex-start;
+        padding-top: 3rem;
+    }
+
+    .login-box {
+        padding: 2.5rem 1.5rem;
+        border-radius: 24px;
+        max-width: 100%;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .login-box h2 {
+        font-size: 1.3rem;
+    }
+
+    .btn-login {
+        font-size: 0.75rem;
+        padding: 0.9rem 1.5rem;
+    }
+
+    .input-group input {
+        font-size: 16px; /* Previne zoom automático em iOS */
+        padding: 0.8rem 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .login-box {
+        padding: 2rem 1rem;
+        border-radius: 20px;
+    }
+
+    .links {
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .links .separator {
+        display: none;
+    }
+}

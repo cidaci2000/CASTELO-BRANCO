@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | SportLife</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-purple: #4f46e5;
+    --deep-purple: #1e1b4b;
+    --neon-glow: #818cf8;
+    --bg-black: #0a0a0f;
+    --card-gray: rgba(255, 255, 255, 0.03);
+    --border: rgba(79, 70, 229, 0.15);
+    --text-muted: #94a3b8;
+    --input-bg: rgba(255, 255, 255, 0.02);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    background-color: var(--bg-black);
+    color: white;
+    overflow-x: hidden;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Efeito de brilho no fundo */
+.glow {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: #3730a3;
+    filter: blur(150px);
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.glow-1 {
+    top: 10%;
+    left: 10%;
+}
+
+.glow-2 {
+    bottom: 10%;
+    right: 10%;
+    background: var(--primary-purple);
+}
+
+/* Header */
+header {
+    padding: 30px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    background: linear-gradient(to right, #e2e8f0, var(--primary-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+}
+
+nav a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    margin-left: 35px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-purple);
+}
+
+/* Card de Login */
+.card {
+    background: var(--card-gray);
+    border: 1px solid var(--border);
+    padding: 50px 45px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 450px;
+    margin: 100px auto;
+    backdrop-filter: blur(10px);
+    transition: 0.5s;
+}
+
+.card:hover {
+    border-color: var(--primary-purple);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(79, 70, 229, 0.1);
+}
+
+/* Título */
+h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #fff, var(--primary-purple), #fff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 35px;
+    font-size: 0.9rem;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 25px;
+}
+
+label {
+    font-size: 0.75rem;
+    color: var(--primary-purple);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+}
+
+/* Botão */
+button {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary-purple);
+    border: none;
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 8px;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+button:hover {
+    background: white;
+    color: black;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(79, 70, 229, 0.4);
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.footer-logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.8rem;
+    color: var(--primary-purple);
+    opacity: 0.5;
+    letter-spacing: 2px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .card {
+        margin: 80px 20px;
+        padding: 35px 25px;
+    }
+    
+    h1 {
+        font-size: 3rem;
+    }
+    
+    nav a {
+        margin-left: 15px;
+        font-size: 0.7rem;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Efeito de brilho -->
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<!-- Header igual ao segundo código -->
+<header>
+    <a href="#" class="logo">SPORTLIFE</a>
+    <nav>
+        <a href="#">INÍCIO</a>
+        <a href="#">MÓDULOS</a>
+        <a href="#">CONTATO</a>
+    </nav>
+</header>
+
+<!-- Card de Login -->
+<div class="card">
+    <h1>LOGIN</h1>
+    <p class="subtitle">Acesse sua conta e treine como um atleta</p>
+
+    <form onsubmit="login(event)">
+       
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" required placeholder="seu@email.com">
+        </div>
+
+        <div class="input-group">
+            <label>Senha</label>
+            <input type="password" id="senha" required placeholder="••••••">
+        </div>
+
+        <div class="input-group">
+            <label>Tipo de Acesso</label>
+            <select id="tipo" required>
+                <option value="">Selecione</option>
+                <option value="admin">Administrador</option>
+                <option value="user">Usuário</option>
+            </select>
+        </div>
+
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+
+<!-- Footer igual ao segundo código -->
+<footer>
+    <div class="footer-logo">SPORTLIFE — TREINE COMO UM ATLETA</div>
+</footer>
+
+<script>
+function login(event) {
+    event.preventDefault();
+
+    let email = document.getElementById("email").value;
+    let senha = document.getElementById("senha").value;
+    let tipo = document.getElementById("tipo").value;
+
+    // LOGIN SIMPLES (exemplo)
+    if(tipo === "admin") {
+        if(email === "admin@gmail.com" && senha === "123") {
+            alert("✅ Login de ADMIN realizado com sucesso!");
+            window.location.href = "admin.html";
+        } else {
+            alert("❌ Erro no login de admin. Verifique suas credenciais.");
+        }
+    }
+
+    if(tipo === "user") {
+        if(email === "user@gmail.com" && senha === "123") {
+            alert("✅ Login de USUÁRIO realizado com sucesso!");
+            window.location.href = "usuario.html";
+        } else {
+            alert("❌ Erro no login de usuário. Verifique suas credenciais.");
+        }
+    }
+}
+</script>
+
+</body>
+</html>
