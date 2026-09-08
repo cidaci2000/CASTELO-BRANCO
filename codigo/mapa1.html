@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+        background: #1a1a2e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container-mapa {
+        background: #16213e;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        border: 2px solid #0f3460;
+    }
+
+    .mapa {
+        display: grid;
+        grid-template-columns: repeat(12, 60px);
+        grid-template-rows: repeat(12, 60px);
+        gap: 3px;
+    }
+
+    .celula {
+        border-radius: 8px;
+        transition: all 0.2s;
+        position: relative;
+        cursor: pointer;
+    }
+
+    /* Terrenos com gradientes */
+    .agua {
+        background: linear-gradient(135deg, #2980b9, #6dd5fa);
+        box-shadow: inset 0 -3px 0 #1a5276;
+    }
+
+    .agua::after {
+        content: '🌊';
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.7;
+    }
+
+    .grama {
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        box-shadow: inset 0 -3px 0 #1e8449;
+    }
+
+    .grama::after {
+        content: '🌿';
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.5;
+    }
+
+    .montanha {
+        background: linear-gradient(135deg, #7f8c8d, #bdc3c7);
+        box-shadow: inset 0 -3px 0 #5d6d7e;
+    }
+
+    .montanha::after {
+        content: '⛰️';
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .estrada {
+        background: linear-gradient(135deg, #d4ac0d, #f1c40f);
+        box-shadow: inset 0 -3px 0 #b7950b;
+    }
+
+    .estrada::after {
+        content: '🛤️';
+        font-size: 18px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .construcao {
+        background: linear-gradient(135deg, #c0392b, #e74c3c);
+        box-shadow: inset 0 -3px 0 #922b21;
+    }
+
+    .construcao::after {
+        content: '🏠';
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .floresta {
+        background: linear-gradient(135deg, #1e8449, #27ae60);
+        box-shadow: inset 0 -3px 0 #145a32;
+    }
+
+    .floresta::after {
+        content: '🌳';
+        font-size: 22px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Interações */
+    .celula:hover {
+        transform: scale(1.15);
+        z-index: 10;
+        box-shadow: 0 0 25px rgba(255,255,255,0.3);
+    }
+
+    .celula.selecionada {
+        outline: 3px solid #f1c40f;
+        outline-offset: 2px;
+        animation: pulsar 1s infinite;
+    }
+
+    @keyframes pulsar {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    /* Legenda */
+    .legenda {
+        margin-top: 20px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 15px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+    }
+
+    .legenda-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #ecf0f1;
+        font-size: 14px;
+    }
+
+    .legenda-cor {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+    }
+</style>
+</head>
+<body>
+    <div class="container-mapa">
+        <div class="mapa" id="mapa"></div>
+        
+        <div class="legenda">
+            <div class="legenda-item">
+                <div class="legenda-cor" style="background: linear-gradient(135deg, #2980b9, #6dd5fa);"></div>
+                Água
+            </div>
+            <div class="legenda-item">
+                <div class="legenda-cor" style="background: linear-gradient(135deg, #27ae60, #2ecc71);"></div>
+                Grama
+            </div>
+            <div class="legenda-item">
+                <div class="legenda-cor" style="background: linear-gradient(135deg, #7f8c8d, #bdc3c7);"></div>
+                Montanha
+            </div>
+            <div class="legenda-item">
+                <div class="legenda-cor" style="background: linear-gradient(135deg, #d4ac0d, #f1c40f);"></div>
+                Estrada
+            </div>
+            <div class="legenda-item">
+                <div class="legenda-cor" style="background: linear-gradient(135deg, #c0392b, #e74c3c);"></div>
+                Construção
+            </div>
+            <div class="legenda-item">
+                <div class="legenda-cor" style="background: linear-gradient(135deg, #1e8449, #27ae60);"></div>
+                Floresta
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mapa = document.getElementById('mapa');
+        const terrenos = ['agua', 'grama', 'montanha', 'estrada', 'construcao', 'floresta'];
+        const tamanho = 12; // 12x12
+
+        // Criar mapa com padrão mais organizado
+        for (let i = 0; i < tamanho * tamanho; i++) {
+            const celula = document.createElement('div');
+            celula.className = 'celula';
+            
+            // Distribuição mais interessante de terrenos
+            let terreno;
+            const rand = Math.random();
+            if (rand < 0.15) terreno = 'agua';
+            else if (rand < 0.35) terreno = 'grama';
+            else if (rand < 0.50) terreno = 'montanha';
+            else if (rand < 0.65) terreno = 'estrada';
+            else if (rand < 0.80) terreno = 'construcao';
+            else terreno = 'floresta';
+            
+            celula.classList.add(terreno);
+            
+            // Coordenadas
+            const linha = Math.floor(i / tamanho);
+            const coluna = i % tamanho;
+            celula.dataset.linha = linha;
+            celula.dataset.coluna = coluna;
+            
+            // Evento de clique
+            celula.addEventListener('click', function() {
+                // Remove seleção anterior
+                document.querySelectorAll('.celula.selecionada').forEach(el => {
+                    el.classList.remove('selecionada');
+                });
+                this.classList.add('selecionada');
+                
+                const info = `Célula [${this.dataset.linha}, ${this.dataset.coluna}] - ${this.className.replace('celula ', '')}`;
+                console.log(info);
+            });
+            
+            mapa.appendChild(celula);
+        }
+    </script>
+</body>
+</html>
