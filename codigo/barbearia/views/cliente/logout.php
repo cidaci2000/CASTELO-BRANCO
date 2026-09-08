@@ -1,0 +1,15 @@
+<?php
+// Caminho: barbearia/views/cliente/logout.php
+
+session_start();
+
+// Limpar todas as variáveis de sessão
+$_SESSION = array();
+
+// Destruir a sessão
+session_destroy();
+
+// Redirecionar para o login
+header("Location: ../auth/login.php");
+exit();
+?>
