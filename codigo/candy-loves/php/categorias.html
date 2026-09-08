@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categorias - Receitas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fafafa 0%, #f5f0f0 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .header a {
+      background-color: #FFC5D3;
+      color: #555;
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header a:hover {
+      background-color: #FFB0C2;
+      transform: translateX(-5px);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 0;
+      color: #b83b5e;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Seção com Carrossel */
+    .carousel-section {
+      margin-bottom: 80px;
+    }
+
+    .section-title {
+      color: #b83b5e;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      padding-left: 15px;
+      border-left: 5px solid #b83b5e;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .carousel {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .carousel::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .carousel::-webkit-scrollbar-track {
+      background: rgba(184, 59, 94, 0.1);
+      border-radius: 10px;
+    }
+
+    .carousel::-webkit-scrollbar-thumb {
+      background: #b83b5e;
+      border-radius: 10px;
+    }
+
+    .carousel-item {
+      flex: 0 0 280px;
+      height: 240px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 15px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      color: inherit;
+      outline: none;
+      border: none;
+    }
+
+    .carousel-item:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(184, 59, 94, 0.2);
+    }
+
+    .carousel-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(60, 50, 50, 0.4) 0%, rgba(40, 30, 30, 0.5) 100%);
+      border-radius: 15px;
+      transition: background 0.3s ease;
+    }
+
+    .carousel-item:hover::before {
+      background: linear-gradient(135deg, rgba(60, 50, 50, 0.25) 0%, rgba(40, 30, 30, 0.35) 100%);
+    }
+
+    .carousel-content {
+      position: relative;
+      text-align: center;
+      color: #fffaf7;
+      padding: 20px;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .carousel-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.4rem;
+      color: #fffaf7;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .carousel-content p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #f0e9e9;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(184, 59, 94, 0.8);
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .carousel-nav:hover {
+      background: #b83b5e;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-prev {
+      left: 10px;
+    }
+
+    .carousel-next {
+      right: 10px;
+    }
+
+    /* Grid de Categorias */
+    .categorias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 20px 0 60px;
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .categorias-grid a {
+      text-decoration: none;
+      color: inherit;
+      outline: none;
+      border: none;
+    }
+
+    .categoria {
+      height: 240px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .categoria:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(184, 59, 94, 0.15);
+    }
+
+    .categoria::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(60, 50, 50, 0.4) 0%, rgba(40, 30, 30, 0.5) 100%);
+      border-radius: 20px;
+      transition: background 0.3s ease;
+    }
+
+    .categoria:hover::before {
+      background: linear-gradient(135deg, rgba(60, 50, 50, 0.25) 0%, rgba(40, 30, 30, 0.35) 100%);
+    }
+
+    .categoria-content {
+      position: relative;
+      text-align: center;
+      color: #fffaf7;
+      padding: 20px;
+      z-index: 1;
+      width: 100%;
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0.8;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .categoria-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.5rem;
+      color: #fffaf7;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .categoria-content p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #f0e9e9;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 25px;
+      background: linear-gradient(135deg, #d8a7b1 0%, #c9949f 100%);
+      color: #fffaf7;
+      border-radius: 15px;
+      margin-top: 60px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      font-weight: 500;
+    }
+
+    /* Responsivo para tablets */
+    @media (max-width: 1024px) {
+      .categorias-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+      }
+
+      .categoria {
+        height: 220px;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .carousel-item {
+        flex: 0 0 250px;
+        height: 220px;
+      }
+    }
+
+    /* Responsivo para celulares */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .header a {
+        justify-content: center;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        min-width: auto;
+      }
+
+      .categorias-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 15px 0 40px;
+      }
+
+      .categoria {
+        height: 180px;
+      }
+
+      .categoria-content h3 {
+        font-size: 1.2rem;
+      }
+
+      .categoria-content p {
+        font-size: 0.75rem;
+        display: none;
+      }
+
+      .carousel-item {
+        flex: 0 0 200px;
+        height: 180px;
+      }
+
+      .carousel-item h3 {
+        font-size: 1.2rem;
+      }
+
+      .carousel-item p {
+        display: none;
+      }
+
+      footer {
+        padding: 20px 15px;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .categorias-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .categoria {
+        height: 150px;
+      }
+
+      .categoria-content h3 {
+        font-size: 1rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .carousel-item {
+        flex: 0 0 160px;
+        height: 150px;
+      }
+
+      .carousel-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="receitas.php">
+        <span>←</span> Início
+      </a>
+      <h2>👩🏽‍🍳 Categorias de Receitas</h2>
+      <div style="width: 120px;"></div>
+    </div>
+
+    <!-- Carrossel de Destaques -->
+    <div class="carousel-section">
+      <h3 class="section-title">⭐ Em Destaque</h3>
+      <div class="carousel-wrapper">
+        <div class="carousel" id="mainCarousel">
+          <a href="saladas.html" class="carousel-item" style="background-image:url('https://s2.glbimg.com/O423DImSaWHGhqOEAr-kKbFYwLw=/512x320/smart/e.glbimg.com/og/ed/f/original/2018/05/30/colunas-simplesmente-salada-crudivora.jpg');">
+            <div class="carousel-content">
+              <h3>Saladas </h3>
+              <p>Frescas e saudáveis</p>
+            </div>
+          </a>
+
+          <a href="bolos.html" class="carousel-item" style="background-image:url('https://i.pinimg.com/1200x/cc/d7/03/ccd703c31db077a1aa22191de2dab83f.jpg');">
+            <div class="carousel-content">
+              <h3>Bolos </h3>
+              <p>Doces para ocasiões</p>
+            </div>
+          </a>
+
+          <a href="fitness.html" class="carousel-item" style="background-image:url('https://i.pinimg.com/736x/7d/19/0c/7d190cad9661bf61b5aa556c15dfe8ed.jpg');">
+            <div class="carousel-content">
+              <h3>Fitness </h3>
+              <p>Saudáveis e energéticas</p>
+            </div>
+          </a>
+
+          <a href="airfryer.html" class="carousel-item" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSOXunCXErhqwvJ83tuXEY0YgFEioncU8x7g&s');">
+            <div class="carousel-content">
+              <h3>Airfryer </h3>
+              <p>Prático e saudável</p>
+            </div>
+          </a>
+
+          <a href="japonesa.html" class="carousel-item" style="background-image:url('https://i.pinimg.com/1200x/5a/bf/4b/5abf4b02f352f51ad95c3d0e8b7571d2.jpg');">
+            <div class="carousel-content">
+              <h3>Japonesa </h3>
+              <p>Prontos em minutos</p>
+            </div>
+          </a>
+        </div>
+        <button class="carousel-nav carousel-prev" onclick="scrollCarousel('mainCarousel', -300)">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-nav carousel-next" onclick="scrollCarousel('mainCarousel', 300)">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Grid Principal -->
+    <h3 class="section-title">🍽️ Todas as Categorias</h3>
+    <div class="categorias-grid">
+      <a href="saladas.html" class="categoria" style="background-image:url('https://s2.glbimg.com/O423DImSaWHGhqOEAr-kKbFYwLw=/512x320/smart/e.glbimg.com/og/ed/f/original/2018/05/30/colunas-simplesmente-salada-crudivora.jpg');">
+        <div class="categoria-content">
+          <h3>Saladas </h3>
+          <p>Frescas, leves e saudáveis</p>
+        </div>
+      </a>
+
+      <a href="bolos.html" class="categoria" style="background-image:url('https://i.pinimg.com/1200x/cc/d7/03/ccd703c31db077a1aa22191de2dab83f.jpg');">
+        <div class="categoria-content">
+          <h3>Bolos </h3>
+          <p>Doces para as ocasiões</p>
+        </div>
+      </a>
+
+      <a href="massas.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOeMqNfAuA_m10-whRuMNRnxwKNVvjsW3qjg&s');">
+        <div class="categoria-content">
+          <h3>Massas </h3>
+          <p>Receitas italianas e caseiras</p>
+        </div>
+      </a>
+
+      <a href="sobremesas.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLWFPDtA3zNllINqCqbzHWgY1r2jO-YbY2oA&s');">
+        <div class="categoria-content">
+          <h3>Sobremesas </h3>
+          <p>Delícias para adoçar o dia</p>
+        </div>
+      </a>
+
+      <a href="carnes.html" class="categoria" style="background-image:url('https://i.pinimg.com/736x/a7/a8/86/a7a886f25d65eb0eeb190107bf07cdc6.jpg');">
+        <div class="categoria-content">
+          <h3>Carnes </h3>
+          <p>Pratos fortes e saborosos</p>
+        </div>
+      </a>
+
+      <a href="vegan.html" class="categoria" style="background-image:url('https://i.pinimg.com/736x/c1/f5/78/c1f578d4d542b44ed1af901387418893.jpg');">
+        <div class="categoria-content">
+          <h3>Vegano </h3>
+          <p>Sem ingredientes de origem animal</p>
+        </div>
+      </a>
+
+      <a href="celiacos.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPMozSc4yRybIDSMBagEZ3Bt8t_GJLyFXofQ&s');">
+        <div class="categoria-content">
+          <h3>Comida Celíaca </h3>
+          <p>Receitas sem glúten</p>
+        </div>
+      </a>
+
+      <a href="eventos.html" class="categoria" style="background-image:url('https://i.ytimg.com/vi/x9npV9kNHic/mqdefault.jpg');">
+        <div class="categoria-content">
+          <h3>Eventos </h3>
+          <p>Pratos para festas</p>
+        </div>
+      </a>
+
+      <a href="inverno.html" class="categoria" style="background-image:url('https://i.pinimg.com/736x/d7/51/04/d75104e392316608c729f2887e97978b.jpg');">
+        <div class="categoria-content">
+          <h3>Inverno </h3>
+          <p>Sopas e comidas quentinhas</p>
+        </div>
+      </a>
+
+      <a href="verao.html" class="categoria" style="background-image:url('https://i.pinimg.com/736x/f6/a7/1a/f6a71a954180a2fea1f1f9cfcfb5e547.jpg');">
+        <div class="categoria-content">
+          <h3>Verão </h3>
+          <p>Refrescantes e leves</p>
+        </div>
+      </a>
+
+      <a href="fitness.html" class="categoria" style="background-image:url('https://i.pinimg.com/736x/7d/19/0c/7d190cad9661bf61b5aa556c15dfe8ed.jpg');">
+        <div class="categoria-content">
+          <h3>Fitness </h3>
+          <p>Receitas saudáveis e energéticas</p>
+        </div>
+      </a>
+
+      <a href="airfryer.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSOXunCXErhqwvJ83tuXEY0YgFEioncU8x7g&s');">
+        <div class="categoria-content">
+          <h3>Airfryer </h3>
+          <p>Prático para seu dia a dia</p>
+        </div>
+      </a>
+
+      <a href="prato-unico.html" class="categoria" style="background-image:url('https://static.itdg.com.br/images/250-145/e6c9439c16239d87f983d9a83415f2e4/17144621654003.jpg');">
+        <div class="categoria-content">
+          <h3>Prato Único </h3>
+          <p>Refeições completas em um prato</p>
+        </div>
+      </a>
+
+      <a href="hamburguer.html" class="categoria" style="background-image:url('https://guiadacozinha.com.br/wp-content/uploads/2019/10/hamburguer-caseiro-pr%C3%A1tico.jpg');">
+        <div class="categoria-content">
+          <h3>Hambúrguer </h3>
+          <p>Receitas artesanais para família</p>
+        </div>
+      </a>
+
+      <a href="drinks.html" class="categoria" style="background-image:url('https://receitanatureba.com/wp-content/uploads/2023/09/drinks-sem-alcool.jpg');">
+        <div class="categoria-content">
+          <h3>Drinks </h3>
+          <p>Clássicos, rápidos e fáceis</p>
+        </div>
+      </a>
+
+      <a href="mexicana.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh0TwXDZ2e4gK5642st3qsHe21ecSjaFTJ3g&s');">
+        <div class="categoria-content">
+          <h3>Mexicana </h3>
+          <p>Típicas com picância e frescor</p>
+        </div>
+      </a>
+
+      <a href="japonesa.html" class="categoria" style="background-image:url('https://i.pinimg.com/1200x/5a/bf/4b/5abf4b02f352f51ad95c3d0e8b7571d2.jpg');">
+        <div class="categoria-content">
+          <h3>Japonesa </h3>
+          <p>Pratos prontos em poucos minutos</p>
+        </div>
+      </a>
+
+      <a href="italiana.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg2PhEYnN4d9ZlxNX9MyN6ZBbTyZexXIfXgA&s');">
+        <div class="categoria-content">
+          <h3>Italiana </h3>
+          <p>Autênticos sabores da Itália</p>
+        </div>
+      </a>
+
+      <a href="frutos-do-mar.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAqSDEJDTlk-idyF-IweGlWFDEkH1jtdYi-g&s');">
+        <div class="categoria-content">
+          <h3>Frutos do Mar </h3>
+          <p>Peixes e frutos marinhos</p>
+        </div>
+      </a>
+
+      <a href="cafe-da-manha.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSljoeKv8jdny3_ocXKZUWtKaWo7ErNOvYhw&s');">
+        <div class="categoria-content">
+          <h3>Café da Manhã </h3>
+          <p>Comece o dia com delícia</p>
+        </div>
+      </a>
+
+      <a href="lanches.html" class="categoria" style="background-image:url('https://www.seara.com.br/wp-content/uploads/2025/09/sanduiche-natural-de-levissimo-seara-portal-minha-receita.jpg');">
+        <div class="categoria-content">
+          <h3>Lanches </h3>
+          <p>Opções práticas para o dia a dia</p>
+        </div>
+      </a>
+
+      <a href="indiana.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeyRCmpJuQwZyLNED_QuBswSs-tWuTdjG2Vw&s');">
+        <div class="categoria-content">
+          <h3>Cozinha Indiana </h3>
+          <p>Receitas aromáticas e saborosas</p>
+        </div>
+      </a>
+
+      <a href="tailandesa.html" class="categoria" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/e/ed/Pad_Thai.JPG');">
+        <div class="categoria-content">
+          <h3>Tailandesa </h3>
+          <p>Sabores exóticos e refrescantes</p>
+        </div>
+      </a>
+
+      <a href="docinhos.html" class="categoria" style="background-image:url('https://i.ytimg.com/vi/QUR0BtQKd5Y/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCKsZIKgbbiFNOMLFaaIkfFvO4yLw');">
+        <div class="categoria-content">
+          <h3>Docinhos </h3>
+          <p>Pequenos doces para presentear</p>
+        </div>
+      </a>
+
+      <a href="sanduiches.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8RSdUviAo-UeQ43BPq9FBqbboYDbeu_782w&s');">
+        <div class="categoria-content">
+          <h3>Sanduíches </h3>
+          <p>Combinações criativas</p>
+        </div>
+      </a>
+
+      <a href="sopas.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiys3QnFG0b8Hv-Q31Fp3B9tBtZBGha0vvEQ&s');">
+        <div class="categoria-content">
+          <h3>Sopas </h3>
+          <p>Quentinhas e reconfortantes</p>
+        </div>
+      </a>
+
+      <a href="low-carb.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2swKvmr8G76U2nzOcPAPfdqSu9Ry3qXdgWQ&s');">
+        <div class="categoria-content">
+          <h3>Low Carb </h3>
+          <p>Baixo teor de carboidratos</p>
+        </div>
+      </a>
+
+      <a href="molhos.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpDd6gBXofY6d9IlzOD4QtPKI8JMeBP3GoMw&s');">
+        <div class="categoria-content">
+          <h3>Molhos & Temperos</h3>
+          <p>Complementos para realçar sabores</p>
+        </div>
+      </a>
+
+      <a href="asiatica.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtS5epIfdrzHUlF88GbQTkDZ1SijX5WC8TFA&s');">
+        <div class="categoria-content">
+          <h3>Culinária Asiática </h3>
+          <p>Receitas do oriente</p>
+        </div>
+      </a>
+
+      <a href="vegetarianas.html" class="categoria" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9KXd1zc7h5xQctSfRhBvSJ4h7hCqvwcXrpQ&s');">
+        <div class="categoria-content">
+          <h3>Vegetarianas </h3>
+          <p>Sem carne, cheias de sabor</p>
+        </div>
+      </a>
+
+    <footer>
+      <p>&copy; 2026 Receitas da Vovó - Todos os direitos reservados</p>
+    </footer>
+  </div>
+
+  <script>
+    function scrollCarousel(carouselId, distance) {
+      const carousel = document.getElementById(carouselId);
+      carousel.scrollBy({
+        left: distance,
+        behavior: 'smooth'
+      });
+    }
+  </script>
+</body>
+</html>

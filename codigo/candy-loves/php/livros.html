@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livraria Doceria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #f5ede4;
+            color: #6e5f5f;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #fcd5ce 0%, #fcc0b0 100%);
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(184, 59, 94, 0.1);
+        }
+
+        header h1 {
+            color: #b83b5e;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-nav button {
+            background: linear-gradient(135deg, #fcd5ce 0%, #fcc0b0 100%);
+            color: #b83b5e;
+            border: 2px solid #b83b5e;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-nav button:hover {
+            background: #b83b5e;
+            color: #fcc0b0;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #e8c7c1 0%, #d9b8b2 100%);
+            padding: 60px 40px;
+            text-align: center;
+            margin: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(184, 59, 94, 0.15);
+        }
+
+        .hero h2 {
+            color: #b83b5e;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .hero p {
+            color: #8b5f5f;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Search Container */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 16px 50px 16px 25px;
+            border: 2px solid #b83b5e;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: #fff;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(184, 59, 94, 0.1);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #a02d50;
+            box-shadow: 0 6px 20px rgba(184, 59, 94, 0.2);
+        }
+
+        .search-bar::placeholder {
+            color: #b0a0a0;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #b83b5e 0%, #a02d50 100%);
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(184, 59, 94, 0.2);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+        }
+
+        /* Section Title */
+        .section-title {
+            color: #b83b5e;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 50px 0 30px 0;
+            padding-left: 15px;
+            border-left: 5px solid #b83b5e;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Categorias */
+        .categoria-lista {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .categoria-card {
+            background: linear-gradient(135deg, #fcd5ce, #fcc0b0);
+            padding: 12px 25px;
+            border-radius: 30px;
+            color: #b83b5e;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .categoria-card:hover {
+            border-color: #b83b5e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(184, 59, 94, 0.2);
+        }
+
+        /* Carrossel */
+        .carrossel {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+            margin-bottom: 50px;
+        }
+
+        .carrossel::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .carrossel::-webkit-scrollbar-track {
+            background: #e8c7c1;
+            border-radius: 10px;
+        }
+
+        .carrossel::-webkit-scrollbar-thumb {
+            background: #b83b5e;
+            border-radius: 10px;
+        }
+
+        /* Cards de Livros */
+        .livro {
+            flex: 0 0 280px;
+            background: linear-gradient(135deg, #fffaf7 0%, #fff5f0 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(184, 59, 94, 0.12);
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .livro:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(184, 59, 94, 0.2);
+            border-color: #b83b5e;
+        }
+
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #b83b5e, #a02d50);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 10px rgba(184, 59, 94, 0.25);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .livro img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .livro:hover img {
+            transform: scale(1.05);
+        }
+
+        .livro h3 {
+            color: #b83b5e;
+            margin: 18px 0 8px;
+            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .livro .tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #fcd5ce, #fcc0b0);
+            color: #b83b5e;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .livro p {
+            color: #8b5f5f;
+            padding: 0 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .preco {
+            font-size: 1.3rem;
+            color: #b83b5e;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        /* Botão Comprar */
+        .comprar {
+            background: linear-gradient(135deg, #b83b5e 0%, #a02d50 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 18px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            width: calc(100% - 36px);
+            box-shadow: 0 5px 15px rgba(184, 59, 94, 0.2);
+        }
+
+        .comprar:hover {
+            background: linear-gradient(135deg, #a02d50, #852444);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(184, 59, 94, 0.3);
+        }
+
+        /* Seção Curiosidades */
+        .curiosidades {
+            background: linear-gradient(135deg, #e8c7c1 0%, #d9b8b2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: 0 8px 25px rgba(184, 59, 94, 0.15);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .curiosidades h2 {
+            color: #b83b5e;
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .curiosidade-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 18px 22px;
+            border-radius: 15px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 10px rgba(184, 59, 94, 0.1);
+            border-left: 4px solid #b83b5e;
+            transition: all 0.3s ease;
+        }
+
+        .curiosidade-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(184, 59, 94, 0.15);
+        }
+
+        .curiosidade-card p {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #6e5f5f;
+            line-height: 1.6;
+        }
+
+        /* Seção Depoimentos */
+        .depoimentos {
+            margin: 60px 0;
+        }
+
+        .depoimentos h2 {
+            color: #b83b5e;
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .depoimentos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .depoimento-card {
+            background: linear-gradient(135deg, #fcd5ce, #fcc0b0);
+            padding: 25px;
+            border-radius: 18px;
+            color: #6e5f5f;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(184, 59, 94, 0.15);
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .depoimento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(184, 59, 94, 0.25);
+            border-color: #b83b5e;
+        }
+
+        .depoimento-card p {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #8b5f5f;
+        }
+
+        .depoimento-autor {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #b83b5e, #a02d50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .depoimento-card span {
+            display: block;
+            font-size: 0.9rem;
+            color: #b83b5e;
+            font-weight: 700;
+        }
+
+        /* Personagem */
+        .personagem-confeiteiro {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 999;
+        }
+
+        .balao-fala {
+            background: linear-gradient(135deg, #fcd5ce, #fcc0b0);
+            border-radius: 20px;
+            padding: 14px 20px;
+            max-width: 240px;
+            box-shadow: 0 5px 15px rgba(184, 59, 94, 0.2);
+            position: relative;
+            font-size: 0.95rem;
+            color: #b83b5e;
+            font-weight: 600;
+            border: 2px solid #b83b5e;
+        }
+
+        .balao-fala::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            right: 20px;
+            border-width: 12px 12px 0 0;
+            border-style: solid;
+            border-color: #fcd5ce transparent transparent transparent;
+        }
+
+        .personagem-confeiteiro img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 4px solid #b83b5e;
+            box-shadow: 0 5px 15px rgba(184, 59, 94, 0.25);
+        }
+
+        .personagem-confeiteiro img:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(184, 59, 94, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #fcd5ce 0%, #fcc0b0 100%);
+            padding: 40px 40px;
+            text-align: center;
+            margin-top: 60px;
+            box-shadow: 0 -4px 15px rgba(184, 59, 94, 0.1);
+        }
+
+        footer h3 {
+            color: #b83b5e;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        footer p {
+            color: #8b5f5f;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        footer .social {
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #b83b5e;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #a02d50;
+            transform: scale(1.1);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.3rem;
+            }
+
+            .hero {
+                padding: 40px 20px;
+                margin: 20px;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 0 20px 40px;
+            }
+
+            .search-container {
+                max-width: 90%;
+                margin: 0 auto 30px;
+            }
+
+            .carrossel {
+                gap: 15px;
+            }
+
+            .livro {
+                flex: 0 0 200px;
+            }
+
+            .personagem-confeiteiro {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .personagem-confeiteiro img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .depoimentos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>🍰 Livraria Doceria 🍰</h1>
+        <div class="header-nav">
+            <a href="receitas.php" style="text-decoration: none;">
+                <button>← Voltar</button>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h2>Bem-vindo ao Nosso Acervo</h2>
+            <p>Descubra as melhores receitas da vovó com todo o amor do mundo</p>
+        </div>
+    </section>
+
+    <!-- Search Container -->
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="🔍 Pesquise por livros, receitas...">
+        <button class="search-btn">🔍</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Seção Livros -->
+        <section class="livros">
+            <h2 class="section-title">📚 Livros & Receitas da Vovó</h2>
+
+            <!-- Categorias -->
+            <div class="categoria-lista">
+                <button class="categoria-card">🍰 Doces</button>
+                <button class="categoria-card">🍲 Sopas</button>
+                <button class="categoria-card">🎂 Bolos</button>
+                <button class="categoria-card">🥧 Tortas</button>
+                <button class="categoria-card">🍪 Biscoitos</button>
+            </div>
+
+            <!-- Carrossel de Livros -->
+            <div class="carrossel">
+                <div class="livro">
+                    <div class="badge">-15%</div>
+                    <img src="https://m.media-amazon.com/images/I/91-TNKz5AjL._AC_UL320_.jpg" alt="Bolos da Vovó">
+                    <h3>Bolos da Vovó</h3>
+                    <span class="tag">⭐ Bestseller</span>
+                    <p>Receitas de bolos fofinhos e cheios de amor.</p>
+                    <div class="preco">R$ 30,00</div>
+                    <button class="comprar">🛒 Comprar</button>
+                </div>
+
+                <div class="livro">
+                    <div class="badge">Exclusivo</div>
+                    <img src="https://m.media-amazon.com/images/I/51RAb17zveL._SX342_SY445_ML2_.jpg" alt="Doces Coloridos">
+                    <h3>Doces Coloridos</h3>
+                    <span class="tag">✨ Premium</span>
+                    <p>Dos biscoitos aos bolos, passando pelas tortas e doçuras.</p>
+                    <div class="preco">R$ 160,93</div>
+                    <button class="comprar">🛒 Comprar</button>
+                </div>
+
+                <div class="livro">
+                    <div class="badge">-20%</div>
+                    <img src="https://m.media-amazon.com/images/I/81u5fEClf5L._AC_UL320_.jpg" alt="Não é Sopa">
+                    <h3>Não é Sopa</h3>
+                    <span class="tag">📖 Clássico</span>
+                    <p>Publicado em 1994, reúne crônicas e receitas especiais.</p>
+                    <div class="preco">R$ 74,02</div>
+                    <button class="comprar">🛒 Comprar</button>
+                </div>
+
+                <div class="livro">
+                    <img src="https://m.media-amazon.com/images/I/51v+WUG5chL._SY445_SX342_ML2_.jpg" alt="Tortas Especiais">
+                    <h3>A Arte das Tortas Doces</h3>
+                    <span class="tag">👨‍🍳 Profissional</span>
+                    <p>Aprenda as técnicas para preparar as mais deliciosas tortas.</p>
+                    <div class="preco">R$ 94,33</div>
+                    <button class="comprar">🛒 Comprar</button>
+                </div>
+
+                <div class="livro">
+                    <div class="badge">⭐ Top</div>
+                    <img src="https://m.media-amazon.com/images/I/51zslBNY0EL._SY425_.jpg" alt="Biscoitos da Vovó">
+                    <h3>The Ultimate Cookie</h3>
+                    <span class="tag">🌍 Internacional</span>
+                    <p>499 receitas de biscoito deliciosas - clássicos e modernos.</p>
+                    <div class="preco">R$ 106,37</div>
+                    <button class="comprar">🛒 Comprar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Curiosidades -->
+        <section class="curiosidades">
+            <h2>💡 Curiosidades da Vovó</h2>
+            <div class="curiosidade-card">
+                <p>❤️ Muitas receitas de vó não têm medidas exatas; o segredo é sentir o ponto e a intuição.</p>
+            </div>
+            <div class="curiosidade-card">
+                <p>❤️ Adicionar uma pitada de sal nos doces realça o sabor e equilibra a doçura.</p>
+            </div>
+            <div class="curiosidade-card">
+                <p>❤️ O bolo de cenoura foi popularizado no Brasil nos anos 60 e virou tradição.</p>
+            </div>
+            <div class="curiosidade-card">
+                <p>❤️ A maionese surgiu por acidente: soldados franceses misturaram ovo e óleo na hora do apuro.</p>
+            </div>
+            <div class="curiosidade-card">
+                <p>❤️ A receita perfeita é feita com amor, paciência e aquela atenção especial que só a vovó sabe dar.</p>
+            </div>
+        </section>
+
+        <!-- Seção Depoimentos -->
+        <section class="depoimentos">
+            <h2>💬 O Que Nossos Clientes Falam</h2>
+            <div class="depoimentos-grid">
+                <div class="depoimento-card">
+                    <p>"A sopa da vovó me lembra a infância. Simplesmente perfeita! ❤️"</p>
+                    <div class="depoimento-autor">
+                        <div class="avatar">A</div>
+                        <span>Ana</span>
+                    </div>
+                </div>
+
+                <div class="depoimento-card">
+                    <p>"Aprendi a fazer bolos deliciosos e coloridos! Minha família toda aprovou."</p>
+                    <div class="depoimento-autor">
+                        <div class="avatar">L</div>
+                        <span>Lucas</span>
+                    </div>
+                </div>
+
+                <div class="depoimento-card">
+                    <p>"Cada receita tem um toque especial que faz lembrar a cozinha da vovó. Maravilhoso!"</p>
+                    <div class="depoimento-autor">
+                        <div class="avatar">S</div>
+                        <span>Sofia</span>
+                    </div>
+                </div>
+
+                <div class="depoimento-card">
+                    <p>"Meu filho e eu adoramos testar cada receita juntos. Virou nossa rotina!"</p>
+                    <div class="depoimento-autor">
+                        <div class="avatar">J</div>
+                        <span>Juliana</span>
+                    </div>
+                </div>
+
+                <div class="depoimento-card">
+                    <p>"As receitas são fáceis de seguir e o resultado fica sempre perfeito! Recomendo demais."</p>
+                    <div class="depoimento-autor">
+                        <div class="avatar">M</div>
+                        <span>Marina</span>
+                    </div>
+                </div>
+
+                <div class="depoimento-card">
+                    <p>"Finalmente entendi como a vovó faz aquele bolo tão gostoso. Segredo revelado! 🎉"</p>
+                    <div class="depoimento-autor">
+                        <div class="avatar">C</div>
+                        <span>Carlos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Personagem Confeiteiro -->
+    <div class="personagem-confeiteiro">
+        <div class="balao-fala">Olá! Bem-vindo ao nosso cantinho doce! 🍰</div>
+        <img src="https://via.placeholder.com/90?text=Vovó" alt="Vovó Confeiteira">
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <h3> Livraria Doceria </h3>
+        <p>Compartilhando as melhores receitas e memórias da vovó com você</p>
+        <div class="social">
+            <a href="#facebook">Facebook</a>
+            <a href="#instagram">Instagram</a>
+            <a href="#whatsapp">WhatsApp</a>
+            <a href="#email">Email</a>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.85rem;">© 2024 Livraria Doceria. Feito com ❤️ e muita receita.</p>
+    </footer>
+</body>
+</html>
