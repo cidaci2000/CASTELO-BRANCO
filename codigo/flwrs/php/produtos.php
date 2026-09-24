@@ -1,613 +1,387 @@
+<?php
+require_once '../includes/functions.php';
+
+/* ====== FILTROS E PAGINAÇÃO ====== */
+$busca  = trim($_GET['q'] ?? '');
+$modelo = $_GET['modelo'] ?? '';
+$ordem  = $_GET['ordem'] ?? 'recentes';
+$pagina = max(1, (int)($_GET['pagina'] ?? 1));
+$porPagina = 9;
+$offset = ($pagina - 1) * $porPagina;
+
+$filtros = [
+    'busca'  => $busca,
+    'modelo' => $modelo,
+    'ordem'  => $ordem,
+    'limite' => $porPagina,
+    'offset' => $offset,
+];
+
+$produtos = getProdutosFiltrados($filtros);
+$total    = contarProdutos(['busca' => $busca, 'modelo' => $modelo]);
+$paginas  = max(1, (int)ceil($total / $porPagina));
+$flash    = getFlash();
+
+/* ====== MONTA QUERY STRING PARA PAGINAÇÃO ====== */
+function urlPagina($p) {
+    $params = $_GET;
+    $params['pagina'] = $p;
+    return '?' . http_build_query($params);
+}
+?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>flwrs · produtos</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="../css/produtos.css">
-</head>
-<style>
-            /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flwrs · nossas flores</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/carrinho.css">
+    <style>
+        /* ===== VARIÁVEIS ===== */
+        :root {
+            --coral: #e8857d;
+            --pink: #f4a8a0;
+            --light-pink: #f5d5d0;
+            --soft: #fdf6f5;
+            --dark: #333;
+            --gray: #777;
+            --shadow: 0 4px 20px rgba(0,0,0,.08);
         }
+
+        * { box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #fcf8f5;
-            color: #3d3835;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--soft);
+            color: var(--dark);
+            margin: 0;
+            line-height: 1.5;
         }
 
         /* ===== HEADER ===== */
         header {
-            padding: 1.8rem 0 1.2rem;
-            border-bottom: 1px solid rgba(180, 165, 160, 0.12);
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,.04);
             position: sticky;
             top: 0;
-            background: rgba(252, 248, 245, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             z-index: 100;
         }
-
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
         .header-flex {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 1.5rem;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
+            padding: 1rem 0;
             gap: 1rem;
+            flex-wrap: wrap;
         }
-
+        .header-left { display: flex; align-items: center; gap: 1rem; }
         .back-button {
-            color: #5a5552;
-            text-decoration: none;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            transition: color 0.3s ease;
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--soft); color: var(--dark);
+            text-decoration: none; transition: background .2s;
         }
-
-        .back-button:hover {
-            color: #e94e77;
-        }
-
-        .back-button .material-symbols-outlined {
-            font-size: 1.8rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: baseline;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
+        .back-button:hover { background: var(--light-pink); }
         .logo-word {
-            font-size: 2.2rem;
-            font-weight: 200;
-            letter-spacing: 0.04em;
-            color: #3d3835;
+            font-size: 1.6rem; font-weight: 300; letter-spacing: 2px;
         }
-
-        .logo-word strong {
-            font-weight: 500;
-            color: #e94e77;
-        }
-
+        .logo-word strong { color: var(--coral); }
         .tagline-header {
-            font-size: 0.65rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: #a8958f;
-            padding-left: 1rem;
-            border-left: 1px solid #e8d5d0;
-            font-weight: 300;
+            font-size: .75rem; color: var(--gray); font-style: italic;
         }
-
-        /* ===== NAVIGATION ===== */
         .nav-menu {
-            display: flex;
-            gap: 2.2rem;
-            align-items: center;
-            flex-wrap: wrap;
+            display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
         }
-
         .nav-menu a {
-            text-decoration: none;
-            color: #5a5552;
-            font-size: 0.75rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.3s ease;
-            position: relative;
+            color: var(--dark); text-decoration: none;
+            font-size: .95rem; transition: color .2s;
         }
-
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1.5px;
-            background: #e94e77;
-            transition: width 0.3s ease;
-        }
-
-        .nav-menu a:hover {
-            color: #e94e77;
-        }
-
-        .nav-menu a:hover::after {
-            width: 100%;
-        }
-
-        .cart-link {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
+        .nav-menu a:hover { color: var(--coral); }
         .cart-icon-wrapper {
-            display: flex;
-            align-items: center;
-            position: relative;
-            padding: 0.3rem 0.5rem;
-            border-radius: 30px;
-            transition: background 0.3s ease;
+            position: relative; display: inline-flex;
+            align-items: center; justify-content: center;
+            width: 40px; height: 40px;
+            background: var(--soft); border-radius: 50%;
         }
-
-        .cart-icon-wrapper:hover {
-            background: rgba(184, 122, 142, 0.06);
-        }
-
-        .cart-icon-wrapper i {
-            font-size: 1.2rem;
-            color: #4a4542;
-            transition: color 0.3s ease;
-        }
-
-        .cart-icon-wrapper:hover i {
-            color: #e94e77;
-        }
-
         .cart-count-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #e94e77;
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 600;
-            border-radius: 50%;
-            min-width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Inter', monospace;
-            letter-spacing: 0;
-            box-shadow: 0 2px 8px rgba(184, 122, 142, 0.25);
+            position: absolute; top: -4px; right: -4px;
+            min-width: 20px; height: 20px;
+            background: var(--coral); color: #fff;
+            border-radius: 50%; font-size: .7rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; padding: 0 5px;
         }
 
-        /* ===== PRODUTOS HEADER ===== */
-        .produtos-header {
-            padding: 4rem 0 2.5rem;
+        /* ===== HERO ===== */
+        .page-hero {
             text-align: center;
-            border-bottom: 1px solid rgba(180, 165, 160, 0.06);
+            padding: 2.5rem 1rem 1.5rem;
         }
-
-        .produtos-header h1 {
-            font-size: 2.8rem;
-            font-weight: 300;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            color: #2d2825;
+        .page-hero h1 {
+            font-size: 2rem; font-weight: 400; margin: 0 0 .5rem;
         }
-
-        .produtos-header h1 span {
-            color: #f07d9d;
-            font-weight: 400;
-            position: relative;
-        }
-
-        .produtos-header h1 span::before {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: #f7d6e7;
-            z-index: -1;
-        }
-
-        .produtos-header p {
-            margin-top: 1rem;
-            font-size: 1.05rem;
-            color: #6d6560;
-            font-weight: 300;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .page-hero h1 span { color: var(--coral); font-weight: 600; }
+        .page-hero p { color: var(--gray); margin: 0; }
 
         /* ===== FILTROS ===== */
-        .filtros {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            justify-content: center;
-            padding: 2.5rem 0 3rem;
+        .filtros-bar {
+            background: #fff;
+            border-radius: 20px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 1rem;
+            align-items: center;
         }
-
-        .filtro-btn {
-            background: transparent;
-            border: 1px solid rgba(180, 165, 160, 0.15);
-            padding: 0.5rem 1.8rem;
+        .search-box {
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: .8rem 1rem .8rem 2.6rem;
+            border: 2px solid var(--light-pink);
             border-radius: 50px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #5a5552;
+            outline: none;
+            font-size: .95rem;
+            font-family: inherit;
+            transition: border-color .2s;
+        }
+        .search-box input:focus { border-color: var(--coral); }
+        .search-box .material-symbols-outlined {
+            position: absolute; left: .8rem; top: 50%;
+            transform: translateY(-50%); color: var(--gray);
+        }
+        .filtros-bar select {
+            padding: .8rem 2.5rem .8rem 1rem;
+            border: 2px solid var(--light-pink);
+            border-radius: 50px;
+            background: #fff;
+            font-family: inherit;
+            font-size: .95rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 400;
+            outline: none;
+        }
+        .filtros-bar select:focus { border-color: var(--coral); }
+        .filtros-bar button {
+            padding: .8rem 1.5rem;
+            background: linear-gradient(135deg, var(--coral), var(--pink));
+            color: #fff; border: none; border-radius: 50px;
+            font-weight: 600; cursor: pointer; font-family: inherit;
+            font-size: .95rem;
+            transition: transform .2s;
+        }
+        .filtros-bar button:hover { transform: translateY(-2px); }
+
+        /* ===== CHIPS DE MODELO ===== */
+        .chips {
+            display: flex; gap: .5rem; flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .chip {
+            padding: .5rem 1rem;
+            background: #fff;
+            border: 2px solid var(--light-pink);
+            border-radius: 50px;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: .85rem;
+            transition: all .2s;
+        }
+        .chip:hover { border-color: var(--coral); color: var(--coral); }
+        .chip.ativo {
+            background: linear-gradient(135deg, var(--coral), var(--pink));
+            color: #fff; border-color: transparent;
         }
 
-        .filtro-btn:hover {
-            border-color: #e94e77;
-            color: #e94e77;
-            transform: translateY(-2px);
+        /* ===== GRID DE PRODUTOS ===== */
+        .produtos-info {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1rem; color: var(--gray); font-size: .9rem;
         }
-
-        .filtro-btn.ativo {
-            background: #e94e77;
-            border-color: #e94e77;
-            color: white;
-            box-shadow: 0 4px 15px rgba(233, 78, 119, 0.2);
-        }
-
-        /* ===== PRODUTOS GRID ===== */
         .produtos-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            padding: 1rem 0 4rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
-
         .produto-card {
-            background: white;
-            border-radius: 28px;
-            padding: 2rem 1.5rem 1.8rem;
-            border: 1px solid rgba(180, 165, 160, 0.06);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .produto-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #f5ece9, #e94e77, #f5ece9);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .produto-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(184, 122, 142, 0.12);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.04);
-        }
-
-        .produto-card:hover::before {
-            opacity: 1;
-        }
-
-        .produto-imagem {
-            font-size: 3.5rem;
-            text-align: center;
-            padding: 1.5rem 0;
-            background: linear-gradient(150deg, #fdf8f5, #f8f0ed);
+            background: #fff;
             border-radius: 20px;
-            margin-bottom: 1.2rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform .25s;
         }
-
-        .produto-categoria {
-            font-size: 0.6rem;
+        .produto-card:hover { transform: translateY(-4px); }
+        .produto-imagem {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(135deg, var(--light-pink), var(--pink));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem;
+            overflow: hidden;
+            position: relative;
+        }
+        .produto-imagem img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .produto-badge {
+            position: absolute; top: .8rem; left: .8rem;
+            background: rgba(255,255,255,.95);
+            color: var(--coral);
+            padding: .3rem .8rem;
+            border-radius: 50px;
+            font-size: .7rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #a8958f;
-            font-weight: 400;
+            letter-spacing: .5px;
         }
-
+        .produto-info {
+            padding: 1.2rem;
+            display: flex; flex-direction: column;
+            gap: .5rem;
+            flex: 1;
+        }
         .produto-nome {
             font-size: 1.1rem;
-            font-weight: 500;
-            letter-spacing: 0.04em;
-            color: #2d2825;
-            margin: 0.3rem 0 0.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark);
         }
-
         .produto-descricao {
-            font-size: 0.85rem;
-            color: #6d6560;
-            font-weight: 300;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .produto-preco {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #2d2825;
-            margin-bottom: 1.2rem;
-        }
-
-        .produto-preco small {
-            font-size: 0.75rem;
-            color: #a8958f;
-            font-weight: 300;
-        }
-
-        .produto-acoes {
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-        }
-
-        .btn-comprar {
+            color: var(--gray);
+            font-size: .85rem;
+            line-height: 1.4;
             flex: 1;
-            background: #e94e77;
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .produto-preco {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-top: auto;
+        }
+        .produto-actions {
+            padding: 0 1.2rem 1.2rem;
+        }
+        .btn-add {
+            width: 100%;
+            padding: .75rem;
+            background: linear-gradient(135deg, var(--coral), var(--pink));
+            color: #fff; border: none; border-radius: 50px;
+            font-weight: 600; cursor: pointer; font-family: inherit;
+            font-size: .9rem;
+            display: flex; align-items: center; justify-content: center;
+            gap: .4rem;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .btn-add:disabled {
+            opacity: .6; cursor: not-allowed; transform: none;
         }
 
-        .btn-comprar:hover {
-            background: #d43d66;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(233, 78, 119, 0.2);
-        }
-
-        .btn-favoritar {
-            background: transparent;
-            border: 1px solid rgba(180, 165, 160, 0.15);
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #a8958f;
-            font-size: 0;
-        }
-
-        .btn-favoritar .material-symbols-outlined {
-            font-size: 1.2rem;
-        }
-
-        .btn-favoritar:hover {
-            border-color: #e94e77;
-            color: #e94e77;
-            background: rgba(233, 78, 119, 0.04);
-        }
-
-        /* ===== DESTAQUE PROMO ===== */
-        .destaque-promo {
-            background: linear-gradient(150deg, #fde8f3, #fefaf5 50%, #c8e8d8);
-            padding: 3.5rem 3rem;
-            border-radius: 28px;
-            text-align: center;
-            margin: 2rem 0 3rem;
-            border: 1px solid rgba(180, 165, 160, 0.06);
-        }
-
-        .destaque-promo h3 {
-            font-size: 1.4rem;
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            color: #2d2825;
-            text-transform: none;
-        }
-
-        .destaque-promo h3 span {
-            color: #f07d9d;
-            font-weight: 500;
-        }
-
-        .btn-promo {
-            display: inline-block;
-            background: #e94e77;
-            color: white;
-            padding: 0.7rem 3rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-promo:hover {
-            background: #d43d66;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(233, 78, 119, 0.2);
-        }
-
-        /* ===== INFO RODAPE ===== */
-        .info-rodape {
-            display: flex;
+        /* ===== PAGINAÇÃO ===== */
+        .paginacao {
+            display: flex; justify-content: center; gap: .5rem;
+            margin: 2rem 0;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 2.5rem;
-            padding: 3rem 0 1rem;
-            border-top: 1px solid rgba(180, 165, 160, 0.06);
+        }
+        .paginacao a, .paginacao span {
+            min-width: 40px; height: 40px;
+            padding: 0 1rem;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 50px;
+            background: #fff;
+            color: var(--dark);
+            text-decoration: none;
+            border: 2px solid var(--light-pink);
+            font-size: .9rem;
+            transition: all .2s;
+        }
+        .paginacao a:hover { border-color: var(--coral); color: var(--coral); }
+        .paginacao .atual {
+            background: linear-gradient(135deg, var(--coral), var(--pink));
+            color: #fff; border-color: transparent;
+        }
+        .paginacao .disabled {
+            opacity: .4; pointer-events: none;
         }
 
-        .info-rodape span {
-            font-size: 0.7rem;
-            color: #a8958f;
-            letter-spacing: 0.04em;
-            font-weight: 300;
+        /* ===== VAZIO ===== */
+        .vazio {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+        .vazio .icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+        .vazio h3 { font-weight: 400; margin: 0 0 .5rem; }
+        .vazio p { color: var(--gray); margin: 0 0 1.5rem; }
+
+        /* ===== NOTIFICAÇÃO ===== */
+        .notificacao {
+            position: fixed; top: 90px; right: 20px;
+            padding: 1rem 1.5rem; border-radius: 10px;
+            color: #fff; font-weight: 600; z-index: 2000;
+            box-shadow: var(--shadow);
+            animation: slideIn .3s ease-out;
+            max-width: 400px;
+        }
+        .notificacao.sucesso { background: linear-gradient(135deg, #5FA86D, #4A8A58); }
+        .notificacao.erro    { background: linear-gradient(135deg, #D64545, #B83535); }
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to   { transform: translateX(0);    opacity: 1; }
         }
 
         /* ===== FOOTER ===== */
         footer {
             text-align: center;
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(180, 165, 160, 0.08);
-            margin-top: 1rem;
+            padding: 2rem 1rem;
+            color: var(--gray);
+            font-size: .85rem;
         }
+        footer span { color: var(--coral); font-style: italic; }
 
-        footer p {
-            font-size: 0.75rem;
-            color: #a8958f;
-            letter-spacing: 0.04em;
-            font-weight: 300;
-        }
-
-        footer span {
-            color: #91b691;
-            font-weight: 400;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .produtos-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .produtos-header h1 {
-                font-size: 2.4rem;
-            }
-        }
-
+        /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
-            .container {
-                padding: 0 1.5rem;
-            }
-
-            .header-flex {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .header-left {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .logo-area {
-                justify-content: center;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .tagline-header {
-                border-left: none;
-                padding-left: 0;
-            }
-
-            .nav-menu {
-                justify-content: center;
-                gap: 1.5rem;
-            }
-
-            .produtos-header h1 {
-                font-size: 2rem;
-            }
-
-            .produtos-grid {
+            .filtros-bar {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
             }
-
-            .filtros {
-                gap: 0.5rem;
-            }
-
-            .filtro-btn {
-                padding: 0.4rem 1.2rem;
-                font-size: 0.65rem;
-            }
-
-            .destaque-promo {
-                padding: 2.5rem 1.5rem;
-            }
-
-            .destaque-promo h3 {
-                font-size: 1.1rem;
-            }
-
-            .info-rodape {
-                gap: 1.5rem;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .nav-menu {
+            .produtos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
                 gap: 1rem;
             }
-
-            .nav-menu a {
-                font-size: 0.65rem;
-                letter-spacing: 0.08em;
-            }
-
-            .produtos-header h1 {
-                font-size: 1.6rem;
-            }
-
-            .produto-card {
-                padding: 1.5rem 1.2rem;
-            }
-
-            .produto-imagem {
-                font-size: 2.8rem;
-                padding: 1rem 0;
-            }
-
-            .btn-comprar {
-                padding: 0.6rem 1rem;
-                font-size: 0.65rem;
-            }
+            .produto-info { padding: 1rem; }
+            .produto-nome { font-size: 1rem; }
+            .produto-preco { font-size: 1.1rem; }
+            .notificacao { left: 10px; right: 10px; max-width: none; }
+            .nav-menu { gap: .8rem; }
+            .nav-menu a:not(.cart-link) { font-size: .85rem; }
         }
-
-        /* ===== MATERIAL SYMBOLS FALLBACK ===== */
-        .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined';
-            font-weight: normal;
-            font-style: normal;
-            font-size: 24px;
-            line-height: 1;
-            letter-spacing: normal;
-            text-transform: none;
-            display: inline-block;
-            white-space: nowrap;
-            word-wrap: normal;
-            direction: ltr;
-            webkit-font-feature-settings: 'liga';
-            webkit-font-smoothing: antialiased; 
-        }
-</style>
+    </style>
+</head>
 <body>
+
+<?php if ($flash): ?>
+    <div class="notificacao <?= e($flash['tipo']) ?>"><?= e($flash['msg']) ?></div>
+<?php endif; ?>
+
 <header>
     <div class="container header-flex">
         <div class="header-left">
@@ -615,138 +389,187 @@
                 <span class="material-symbols-outlined">arrow_back</span>
             </a>
             <div class="logo-area">
-                <div class="logo-word">
-                    flwrs <strong>·</strong>
-                </div>
-                <div class="tagline-header">
-                    “Flowers that feel like feeling”
-                </div>
+                <div class="logo-word">flwrs <strong>·</strong></div>
+                <div class="tagline-header">"Flowers that feel like feeling"</div>
             </div>
         </div>
         <nav class="nav-menu">
-            <a href="produtos.php" style="color:#c06f8b; border-bottom-color:#f7d5e7;">Produtos</a>
+            <a href="produtos.php">Produtos</a>
             <a href="faq.php">FAQ de delivery</a>
             <a href="info.php">Sobre nós</a>
             <a href="carrinho.php" class="cart-link">
                 <div class="cart-icon-wrapper">
                     <i class="fas fa-shopping-bag"></i>
-                    <span class="cart-count-badge" id="cartCountBadge">0</span>
+                    <span class="cart-count-badge"><?= countCarrinho() ?></span>
                 </div>
             </a>
-            <a href="login.php">Login</a>
+            <?php if (isLogged()): ?>
+                <a href="logout.php">Sair</a>
+            <?php else: ?>
+                <a href="login.php">Login</a>
+            <?php endif; ?>
         </nav>
     </div>
 </header>
 
 <main class="container">
-    <section class="produtos-header">
-        <h1><span>Nossos buquês</span> · afeto em cada detalhe</h1>
-        <p>Selecionamos flores da estação para criar composições únicas. Escolha a sua e envie um pedacinho de você.</p>
+
+    <section class="page-hero">
+        <h1><span>nossas flores</span> · escolhidas com afeto</h1>
+        <p>Cada buquê conta uma história. Encontre a sua.</p>
     </section>
 
-    <div class="filtros">
-        <button class="filtro-btn ativo">todos</button>
-        <button class="filtro-btn">buquês</button>
-        <button class="filtro-btn">arranjos</button>
-        <button class="filtro-btn">presentes</button>
-        <button class="filtro-btn">especiais</button>
+    <!-- FILTROS -->
+    <form method="GET" class="filtros-bar">
+        <div class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" name="q" placeholder="Buscar flores..." value="<?= e($busca) ?>">
+        </div>
+
+        <select name="ordem">
+            <option value="recentes"     <?= $ordem === 'recentes'     ? 'selected' : '' ?>>Mais recentes</option>
+            <option value="menor_preco"  <?= $ordem === 'menor_preco'  ? 'selected' : '' ?>>Menor preço</option>
+            <option value="maior_preco"  <?= $ordem === 'maior_preco'  ? 'selected' : '' ?>>Maior preço</option>
+            <option value="nome"         <?= $ordem === 'nome'         ? 'selected' : '' ?>>Nome (A-Z)</option>
+        </select>
+
+        <button type="submit">
+            <span class="material-symbols-outlined" style="vertical-align:middle;font-size:1.1rem;">filter_alt</span>
+            Filtrar
+        </button>
+    </form>
+
+    <!-- CHIPS DE MODELO -->
+    <div class="chips">
+        <?php
+        $chipBase = $_GET;
+        unset($chipBase['modelo'], $chipBase['pagina']);
+        ?>
+        <a href="?<?= http_build_query($chipBase) ?>" class="chip <?= $modelo === '' ? 'ativo' : '' ?>">
+            Todos
+        </a>
+        <?php foreach (modelosMap() as $k => $v):
+            $params = $chipBase; $params['modelo'] = $k;
+        ?>
+            <a href="?<?= http_build_query($params) ?>" class="chip <?= $modelo === $k ? 'ativo' : '' ?>">
+                <?= e($v) ?>
+            </a>
+        <?php endforeach; ?>
     </div>
 
-    <section class="produtos-grid">
-        <!-- Produto 1 - campos de verão -->
-        <article class="produto-card">
-            <div class="produto-imagem">🌸🌿</div>
-            <div class="produto-categoria">buquê afetivo</div>
-            <h3 class="produto-nome">campos de verão</h3>
-            <p class="produto-descricao">Girassóis, folhagens e flores do campo em tons de amarelo e verde.</p>
-            <div class="produto-preco">R$ 89,90 <small>/ un</small></div>
-            <div class="produto-acoes">
-                <button class="btn-comprar">comprar</button>
-                <button class="btn-favoritar"><span class="material-symbols-outlined">favorite</span></button>
-            </div>
-        </article>
-
-        <!-- Produto 2 - rosas suaves -->
-        <article class="produto-card">
-            <div class="produto-imagem">💐🌸</div>
-            <div class="produto-categoria">buquê afetivo</div>
-            <h3 class="produto-nome">rosas suaves</h3>
-            <p class="produto-descricao">Buquê com rosas coral, eucalipto e detalhes em branco.</p>
-            <div class="produto-preco">R$ 129,90 <small>/ un</small></div>
-            <div class="produto-acoes">
-                <button class="btn-comprar">comprar</button>
-                <button class="btn-favoritar"><span class="material-symbols-outlined">favorite</span></button>
-            </div>
-        </article>
-
-        <!-- Produto 3 - minimalismo verde -->
-        <article class="produto-card">
-            <div class="produto-imagem">🌼🌱</div>
-            <div class="produto-categoria">arranjo</div>
-            <h3 class="produto-nome">minimalismo verde</h3>
-            <p class="produto-descricao">Folhagens selecionadas e flores secas em vaso de cerâmica.</p>
-            <div class="produto-preco">R$ 112,00 <small>/ un</small></div>
-            <div class="produto-acoes">
-                <button class="btn-comprar">comprar</button>
-                <button class="btn-favoritar"><span class="material-symbols-outlined">favorite</span></button>
-            </div>
-        </article>
-
-        <!-- Produto 4 - kit afeto -->
-        <article class="produto-card">
-            <div class="produto-imagem">💮✨</div>
-            <div class="produto-categoria">presente especial</div>
-            <h3 class="produto-nome">kit afeto</h3>
-            <p class="produto-descricao">Buquê + velas aromáticas + cartão personalizado.</p>
-            <div class="produto-preco">R$ 189,90 <small>/ kit</small></div>
-            <div class="produto-acoes">
-                <button class="btn-comprar">comprar</button>
-                <button class="btn-favoritar"><span class="material-symbols-outlined">favorite</span></button>
-            </div>
-        </article>
-
-        <!-- Produto 5 - sol e mel -->
-        <article class="produto-card">
-            <div class="produto-imagem">🌻🍯</div>
-            <div class="produto-categoria">buquê especial</div>
-            <h3 class="produto-nome">sol e mel</h3>
-            <p class="produto-descricao">Girassóis com detalhes em amarelo-queimado e embalagem rústica.</p>
-            <div class="produto-preco">R$ 99,90 <small>/ un</small></div>
-            <div class="produto-acoes">
-                <button class="btn-comprar">comprar</button>
-                <button class="btn-favoritar"><span class="material-symbols-outlined">favorite</span></button>
-            </div>
-        </article>
-
-        <!-- Produto 6 - recado florido -->
-        <article class="produto-card">
-            <div class="produto-imagem">🌸💌</div>
-            <div class="produto-categoria">palavras em flor</div>
-            <h3 class="produto-nome">recado florido</h3>
-            <p class="produto-descricao">Escolha o buquê e inclua um cartão com seu recado.</p>
-            <div class="produto-preco">a partir de R$ 79,90</div>
-            <div class="produto-acoes">
-                <button class="btn-comprar">comprar</button>
-                <button class="btn-favoritar"><span class="material-symbols-outlined">favorite</span></button>
-            </div>
-        </article>
-    </section>
-
-    <section class="destaque-promo">
-        <h3><span>assinatura mensal</span> · todo mês um afeto surpresa</h3>
-        <a href="planos.php" class="btn-promo">conhecer</a>
-    </section>
-
-    <div class="info-rodape">
-        <span>🚚 FAQ de delivery — atualizado</span>
-        <span>📮 central.flwrs@gmail.com</span>
+    <!-- INFO RESULTADOS -->
+    <div class="produtos-info">
+        <span>
+            <?= $total ?> <?= $total === 1 ? 'produto encontrado' : 'produtos encontrados' ?>
+            <?= $busca ? " para \"<strong>" . e($busca) . "</strong>\"" : '' ?>
+        </span>
+        <?php if ($busca || $modelo): ?>
+            <a href="produtos.php" style="color:var(--coral);text-decoration:none;font-size:.85rem;">✕ limpar filtros</a>
+        <?php endif; ?>
     </div>
+
+    <!-- GRID DE PRODUTOS -->
+    <div class="produtos-grid">
+        <?php if (empty($produtos)): ?>
+            <div class="vazio">
+                <span class="icon">🌷</span>
+                <h3>Nenhuma flor encontrada</h3>
+                <p>Tente ajustar os filtros ou buscar por outro nome.</p>
+                <a href="produtos.php" class="chip ativo">ver todas as flores</a>
+            </div>
+        <?php else: ?>
+            <?php foreach ($produtos as $p): ?>
+                <div class="produto-card">
+                    <div class="produto-imagem">
+                        <?php if (!empty($p['imagem']) && file_exists($p['imagem'])): ?>
+                            <img src="<?= e(imagemUrl($p['imagem'])) ?>" alt="<?= e($p['nome']) ?>" loading="lazy">
+                        <?php elseif (!empty($p['imagem'])): ?>
+                            <img src="<?= e(imagemUrl($p['imagem'])) ?>" alt="<?= e($p['nome']) ?>" loading="lazy"
+                                 onerror="this.style.display='none';this.parentNode.innerHTML='🌸';">
+                        <?php else: ?>
+                            🌸
+                        <?php endif; ?>
+                        <span class="produto-badge"><?= e(modeloNome($p['modelo'])) ?></span>
+                    </div>
+
+                    <div class="produto-info">
+                        <h3 class="produto-nome"><?= e($p['nome']) ?></h3>
+                        <p class="produto-descricao"><?= e($p['descricao']) ?></p>
+                        <div class="produto-preco">R$ <?= number_format($p['preco'], 2, ',', '.') ?></div>
+                    </div>
+
+                    <form method="POST" action="carrinho_action.php" class="produto-actions">
+                        <input type="hidden" name="acao" value="adicionar">
+                        <input type="hidden" name="produto_id" value="<?= $p['id'] ?>">
+                        <input type="hidden" name="quantidade" value="1">
+                        <button type="submit" class="btn-add">
+                            <span class="material-symbols-outlined" style="font-size:1.1rem;">add_shopping_cart</span>
+                            adicionar ao carrinho
+                        </button>
+                    </form>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+
+    <!-- PAGINAÇÃO -->
+    <?php if ($paginas > 1): ?>
+        <nav class="paginacao">
+            <?php if ($pagina > 1): ?>
+                <a href="<?= urlPagina($pagina - 1) ?>">←</a>
+            <?php else: ?>
+                <span class="disabled">←</span>
+            <?php endif; ?>
+
+            <?php
+            $inicio = max(1, $pagina - 2);
+            $fim    = min($paginas, $pagina + 2);
+
+            if ($inicio > 1) {
+                echo '<a href="' . urlPagina(1) . '">1</a>';
+                if ($inicio > 2) echo '<span class="disabled">…</span>';
+            }
+
+            for ($i = $inicio; $i <= $fim; $i++):
+            ?>
+                <?php if ($i === $pagina): ?>
+                    <span class="atual"><?= $i ?></span>
+                <?php else: ?>
+                    <a href="<?= urlPagina($i) ?>"><?= $i ?></a>
+                <?php endif; ?>
+            <?php endfor; ?>
+
+            <?php if ($fim < $paginas): ?>
+                <?php if ($fim < $paginas - 1) echo '<span class="disabled">…</span>'; ?>
+                <a href="<?= urlPagina($paginas) ?>"><?= $paginas ?></a>
+            <?php endif; ?>
+
+            <?php if ($pagina < $paginas): ?>
+                <a href="<?= urlPagina($pagina + 1) ?>">→</a>
+            <?php else: ?>
+                <span class="disabled">→</span>
+            <?php endif; ?>
+        </nav>
+    <?php endif; ?>
+
 </main>
 
 <footer>
-    <p>flwrs — <span>“Flowers that feel like feeling”</span> — pequenos gestos, memórias eternas</p>
+    <p>flwrs — <span>"Flowers that feel like feeling"</span> — pequenos gestos, memórias eternas</p>
 </footer>
 
-<script src="../js/produtos.js"></script>
+<script>
+    // Auto-esconde notificação após 4s
+    setTimeout(() => {
+        const n = document.querySelector('.notificacao');
+        if (n) {
+            n.style.transition = 'opacity .4s, transform .4s';
+            n.style.opacity = '0';
+            n.style.transform = 'translateX(120%)';
+            setTimeout(() => n.remove(), 500);
+        }
+    }, 4000);
+</script>
+
 </body>
 </html>
