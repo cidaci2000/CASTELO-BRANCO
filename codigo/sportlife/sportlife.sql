@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/09/2026 às 14:15
+-- Tempo de geração: 08/10/2026 às 12:17
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -85,9 +85,12 @@ CREATE TABLE `aulas` (
 --
 
 INSERT INTO `aulas` (`id`, `instrutor_id`, `titulo`, `descricao`, `modalidade`, `data_aula`, `duracao`, `capacidade_maxima`, `vagas_disponiveis`, `local`, `status`, `data_criacao`, `data_atualizacao`) VALUES
-(1, 2, 'Musculação Avançada', 'Treino focado em hipertrofia para alunos avançados', 'Musculação', '2026-09-06 08:07:08', 60, 15, 15, 'Sala 1', 'agendada', '2026-09-04 11:07:08', '2026-09-04 11:07:08'),
-(2, 2, 'Treino Funcional', 'Treino funcional com exercícios dinâmicos', 'Funcional', '2026-09-07 08:07:08', 45, 20, 20, 'Sala 3', 'agendada', '2026-09-04 11:07:08', '2026-09-04 11:07:08'),
-(3, 2, 'Yoga e Flexibilidade', 'Aula de yoga para relaxamento e flexibilidade', 'Yoga', '2026-09-08 08:07:08', 60, 12, 12, 'Sala 2', 'agendada', '2026-09-04 11:07:08', '2026-09-04 11:07:08');
+(1, 2, 'Musculação Avançada', 'Treino focado em hipertrofia para alunos avançados', 'Musculação', '2026-09-06 08:07:08', 60, 15, 14, 'Sala 1', 'finalizada', '2026-09-04 11:07:08', '2026-10-07 14:02:37'),
+(2, 2, 'Treino Funcional', 'Treino funcional com exercícios dinâmicos', 'Funcional', '2026-09-07 08:07:08', 45, 20, 20, 'Sala 3', 'finalizada', '2026-09-04 11:07:08', '2026-10-07 14:02:37'),
+(3, 2, 'Yoga e Flexibilidade', 'Aula de yoga para relaxamento e flexibilidade', 'Yoga', '2026-09-08 08:07:08', 60, 12, 12, 'Sala 2', 'finalizada', '2026-09-04 11:07:08', '2026-10-07 14:02:37'),
+(4, 2, 'Musculação Hoje', 'Treino de hoje à tarde', 'Musculação', '2026-10-07 13:02:37', 60, 15, 14, 'Sala 1', 'agendada', '2026-10-07 14:02:37', '2026-10-07 14:05:30'),
+(5, 2, 'Funcional Amanhã', 'HIIT funcional intenso', 'Funcional', '2026-10-08 11:02:37', 45, 20, 20, 'Sala 3', 'agendada', '2026-10-07 14:02:37', '2026-10-07 14:02:37'),
+(6, 2, 'Yoga Próxima Semana', 'Relaxamento e flexibilidade', 'Yoga', '2026-10-14 11:02:37', 60, 12, 11, 'Sala 2', 'agendada', '2026-10-07 14:02:37', '2026-10-07 14:05:12');
 
 -- --------------------------------------------------------
 
@@ -164,6 +167,15 @@ CREATE TABLE `inscricoes_aulas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Despejando dados para a tabela `inscricoes_aulas`
+--
+
+INSERT INTO `inscricoes_aulas` (`id`, `aula_id`, `aluno_id`, `status`, `data_inscricao`, `data_atualizacao`) VALUES
+(1, 1, 3, 'confirmada', '2026-10-07 13:58:41', '2026-10-07 13:58:41'),
+(2, 6, 5, 'confirmada', '2026-10-07 14:05:12', '2026-10-07 14:05:12'),
+(3, 4, 5, 'confirmada', '2026-10-07 14:05:30', '2026-10-07 14:05:30');
+
+--
 -- Acionadores `inscricoes_aulas`
 --
 DELIMITER $$
@@ -199,7 +211,8 @@ CREATE TABLE `logs` (
 
 INSERT INTO `logs` (`id`, `usuario_id`, `acao`, `descricao`, `ip`, `user_agent`, `data_criacao`) VALUES
 (1, 4, 'cadastro_usuario', 'Novo usuário cadastrado: julia@gmail.com', NULL, NULL, '2026-09-04 11:31:54'),
-(2, 5, 'cadastro_usuario', 'Novo usuário cadastrado: joao1@gmail.com', NULL, NULL, '2026-09-04 11:45:45');
+(2, 5, 'cadastro_usuario', 'Novo usuário cadastrado: joao1@gmail.com', NULL, NULL, '2026-09-04 11:45:45'),
+(3, 6, 'cadastro_usuario', 'Novo usuário cadastrado: ana@gmail.com', NULL, NULL, '2026-10-07 14:42:12');
 
 -- --------------------------------------------------------
 
@@ -304,11 +317,12 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome_completo`, `email`, `senha`, `telefone`, `data_nascimento`, `cpf`, `modalidade`, `tipo_usuario`, `foto_perfil`, `ativo`, `data_criacao`, `data_atualizacao`) VALUES
-(1, 'Administrador', 'admin@sportlife.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '(11) 99999-9999', NULL, NULL, 'Administração', 'admin', NULL, 1, '2026-09-04 11:07:08', '2026-09-04 11:07:08'),
-(2, 'Carlos Instrutor', 'carlos@sportlife.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '(11) 98888-8888', NULL, NULL, 'Musculação', 'instrutor', NULL, 1, '2026-09-04 11:07:08', '2026-09-04 11:07:08'),
-(3, 'João Aluno', 'joao@sportlife.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '(11) 97777-7777', NULL, NULL, 'Musculação', 'usuario', NULL, 1, '2026-09-04 11:07:08', '2026-09-04 11:07:08'),
-(4, 'Julia', 'julia@gmail.com', '$2y$10$U0lnnnbi0wOCJ9jFDdHSUu7jZaxCXFnyGZJjXotWlwQ.MuUuevkA6', NULL, NULL, NULL, 'Luta', 'admin', NULL, 1, '2026-09-04 11:31:54', '2026-09-04 11:33:07'),
-(5, 'JOAO VITOR', 'joao1@gmail.com', '$2y$10$F3PunSHb5K5KSrePXgPeIOz2TnXNKhTTm.d0lLgaH86wcdzXhxQPy', '4555555555', '1997-03-14', '761.387.809-06', 'Yoga', 'usuario', NULL, 1, '2026-09-04 11:45:45', '2026-09-04 11:45:45');
+(1, 'Administrador', 'admin@sportlife.com', '$2y$10$F3PunSHb5K5KSrePXgPeIOz2TnXNKhTTm.d0lLgaH86wcdzXhxQPy', '(11) 99999-9999', NULL, NULL, 'Administração', 'admin', NULL, 1, '2026-09-04 11:07:08', '2026-10-06 14:41:02'),
+(2, 'Carlos Instrutor', 'carlos@sportlife.com', '$2y$10$F3PunSHb5K5KSrePXgPeIOz2TnXNKhTTm.d0lLgaH86wcdzXhxQPy', '(11) 98888-8888', NULL, NULL, 'Musculação', 'instrutor', NULL, 1, '2026-09-04 11:07:08', '2026-10-06 14:41:16'),
+(3, 'João Aluno', 'joao@sportlife.com', '$2y$10$F3PunSHb5K5KSrePXgPeIOz2TnXNKhTTm.d0lLgaH86wcdzXhxQPy', '(11) 97777-7777', NULL, NULL, 'Musculação', 'usuario', NULL, 1, '2026-09-04 11:07:08', '2026-10-06 14:41:28'),
+(4, 'Julia', 'julia@gmail.com', '$2y$10$F3PunSHb5K5KSrePXgPeIOz2TnXNKhTTm.d0lLgaH86wcdzXhxQPy', NULL, NULL, NULL, 'Luta', 'admin', NULL, 1, '2026-09-04 11:31:54', '2026-10-06 14:41:46'),
+(5, 'JOAO VITOR', 'joao1@gmail.com', '$2y$10$F3PunSHb5K5KSrePXgPeIOz2TnXNKhTTm.d0lLgaH86wcdzXhxQPy', '4555555555', '1997-03-14', '761.387.809-06', 'Yoga', 'usuario', NULL, 1, '2026-09-04 11:45:45', '2026-09-04 11:45:45'),
+(6, 'ana', 'ana@gmail.com', '$2y$10$nk88JYZT8bQUtqFmYSAbieoSPYIcT0IZLKXMcdHJ8rY2GlppacqTW', '4555555555', '2022-02-02', '444.444.444-44', 'Pilates', 'usuario', NULL, 1, '2026-10-07 14:42:12', '2026-10-07 14:42:12');
 
 --
 -- Acionadores `usuarios`
@@ -496,7 +510,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `aulas`
 --
 ALTER TABLE `aulas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `avaliacoes_fisicas`
@@ -514,13 +528,13 @@ ALTER TABLE `exercicios`
 -- AUTO_INCREMENT de tabela `inscricoes_aulas`
 --
 ALTER TABLE `inscricoes_aulas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `notificacoes`
@@ -550,7 +564,7 @@ ALTER TABLE `treino_exercicios`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restrições para tabelas despejadas
